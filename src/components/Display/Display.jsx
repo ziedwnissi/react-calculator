@@ -1,11 +1,11 @@
 import React from 'react';
 import './Display.css';
 
-const Display = () => {
+const Display = ({displayValue}) => {
   return (
     <div className="display-container">
       <p className="display-value">
-        0
+        {displayValue}
       </p>
     </div>
   );

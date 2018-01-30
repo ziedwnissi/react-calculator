@@ -2,7 +2,7 @@
   align-items: center;
   background: var(--display-background);
   display: flex;
-  padding: 4% 4% 0 4%;
+  padding: 4% 4% 2% 4%;
   width: 92%;
 }
 
@@ -12,4 +12,5 @@
   font-family: var(--main-font);
   font-weight: var(--display-text-weight);
   margin-left: auto;
+  overflow: hidden;
 }

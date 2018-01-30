@@ -1,4 +1,5 @@
 .calculator-container {
-  height: 60%;
-  width: 24%;
+  height: var(--calculator-height);
+  width: var(--calculator-width);
 }
+

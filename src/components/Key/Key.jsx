@@ -1,11 +1,14 @@
 import React from 'react';
 import './Key.css';
 
-const Key = ({keyType, keyValue}) => {
+const Key = ({keyAction, keyType, keyValue}) => {
   const keyClass = `key-container ${keyType}`;
   
   return (
-    <div className={keyClass}>
+    <div 
+      className={keyClass}
+      onClick={(event) => keyAction(event, keyValue)}
+    >
       <p className="key-value">
         {keyValue}
       </p>

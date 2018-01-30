@@ -28,6 +28,16 @@
   background-color: var(--number-key-hover);
 }
 
+.submit-key {
+  background-color: var(--submit-key-color);
+  height: 100%;
+  width: 100%;
+}
+
+.submit-key:hover {
+  background-color: var(--submit-key-hover);
+}
+
 .key-value {
   color: var(--key-text-color);
   font-family: var(--main-font);

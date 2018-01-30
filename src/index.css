@@ -10,18 +10,36 @@
   --keypad-background: #696969;
   --number-key: #696969;
   --number-key-hover: #3f3f3f;
+  --submit-key-color: #d18800;
+  --submit-key-hover: #aa6e00;
 
   /* font */
   --main-font: 'Orbitron', sans-serif;
 
   /* font sizes */
-  --display-text-size: 5em;
+  --display-text-size: 4em;
   --key-text-size: 3em;
 
   /* font weights */
   --display-text-weight: 400;
   --key-text-weight: 700;
 
+  /* calculator dimensions */
+  --calculator-height: 72%;
+  --calculator-width: 36%;
+}
+
+/* for tablet or smaller screen */
+@media screen and (max-width: 1024px) {
+  :root {
+    /* font sizes */
+    --display-text-size: 10em;
+    --key-text-size: 6em;
+
+    /* calculator dimensions */
+    --calculator-height: 100%;
+    --calculator-width: 100%;
+  }
 }
 
 /* global css here */
