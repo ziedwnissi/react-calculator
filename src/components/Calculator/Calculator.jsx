@@ -9,18 +9,29 @@ class Calculator extends Component {
     super();
 
     this.state = {
-      displayValue: 0,
+      displayValue: '0',
     }
 
     this.updateDisplay = this.updateDisplay.bind(this);
   }
 
+  add = (value, value2) => {
+    return value + value2;
+  }
+
   updateDisplay = (event, value) => {
     event.preventDefault();
-    
     let {displayValue} = this.state;
-    displayValue += value;
+
+    if (value === 'ce') {
+      displayValue = displayValue.substr(0, displayValue.length - 1);
+      if (displayValue === '') displayValue = '0';
+    } else {
+      displayValue === '0' ? displayValue = value : displayValue += value;
+    }
     
+    if (displayValue === '') displayValue = '0';
+
     this.setState({displayValue});
   }
 
