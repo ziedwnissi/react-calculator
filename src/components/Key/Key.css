@@ -10,12 +10,12 @@
   cursor: pointer;
 }
 
-.action-key {
+.operator-key {
   background-color: var(--action-key);
   width: 100%;
 }
 
-.action-key:hover {
+.operator-key:hover {
   background-color: var(--action-key-hover); 
 }
 

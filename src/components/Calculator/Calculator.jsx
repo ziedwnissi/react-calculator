@@ -5,30 +5,57 @@ import Display from '../Display/Display';
 import Keypad from '../Keypad/Keypad';
 
 class Calculator extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      actions: ['/', 'x', '-', '+'],
+      operators: ['/', 'x', '-', '+'],
       displayValue: '0',
       numbers: ['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0', 'ce'],
-      operator: '',
+      selectedOperator: '',
       storedValue: '',
     }
 
     this.callOperator = this.callOperator.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.setOperator = this.setOperator.bind(this);
     this.updateDisplay = this.updateDisplay.bind(this);
+  }
+  
+  componentWillMount() { 
+    document.addEventListener('keydown', this.handleKeyPress);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress);
+  } 
+
+  handleKeyPress = (event) => {
+    const {numbers, operators} = this.state;
+    
+    numbers.forEach((number) => {
+      if (event.key === number){
+        this.updateDisplay(event, number);
+      }
+    });
+    
+    operators.forEach((operator) => {
+      if (event.key === operator){
+        this.setOperator(event, operator);
+      }
+    });
+
+    if (event.key === 'Enter' || event.key === '=') this.callOperator(event);
   }
 
   callOperator = (event) => {
     event.preventDefault();
-    let {displayValue, operator, storedValue} = this.state;
+    let {displayValue, selectedOperator, storedValue} = this.state;
 
     displayValue = parseInt(displayValue, 10);
     storedValue = parseInt(storedValue, 10);
 
-    switch(operator) {
+    switch(selectedOperator) {
       case '+':
         displayValue = storedValue + displayValue;
         break;
@@ -52,18 +79,18 @@ class Calculator extends Component {
 
   setOperator = (event, value) => {
     event.preventDefault();
-    let {displayValue, operator, storedValue} = this.state;
+    let {displayValue, selectedOperator, storedValue} = this.state;
 
     storedValue = displayValue;
     displayValue = '0';
-    operator = value;
-    this.setState({displayValue, operator, storedValue});
+    selectedOperator = value;
+    this.setState({displayValue, selectedOperator, storedValue});
   }
 
   updateDisplay = (event, value) => {
     event.preventDefault();
     let {displayValue} = this.state;
-
+    
     if (value === 'ce') {
       displayValue = displayValue.substr(0, displayValue.length - 1);
     } else {
@@ -76,15 +103,16 @@ class Calculator extends Component {
   }
 
   render () {
-    const {displayValue, numbers, actions} = this.state;
+    const {displayValue, numbers, operators} = this.state;
     
     return (
       <div className="calculator-container">
         <Display displayValue={displayValue} />
         <Keypad 
-          actions={actions}
-          numbers={numbers}
+          operators={operators}
           callOperator={this.callOperator}
+          numbers={numbers}
+          onKeyPress={this.handleKeyPress} 
           setOperator={this.setOperator}
           updateDisplay={this.updateDisplay}
         />
