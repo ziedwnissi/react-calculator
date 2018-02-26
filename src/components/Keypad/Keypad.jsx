@@ -3,9 +3,9 @@ import './Keypad.css';
 
 import Key from '../Key/Key';
 
-const Keypad = ({actions, numbers, updateDisplay}) => {
+const Keypad = ({actions, callOperator, numbers, setOperator, updateDisplay}) => {
 
-  numbers = numbers.reverse().map((number, iterator) => {
+  numbers = numbers.map((number, iterator) => {
     return (
       <Key
         key={`${number}${iterator}`}
@@ -22,6 +22,7 @@ const Keypad = ({actions, numbers, updateDisplay}) => {
         key={`${action}${iterator}`}
         keyType="action-key" 
         keyValue={action}
+        keyAction={setOperator}
       />
     );
   });
@@ -38,6 +39,7 @@ const Keypad = ({actions, numbers, updateDisplay}) => {
         <Key 
           keyType="submit-key"
           keyValue="="
+          keyAction={callOperator}
         />
       </div>
     </div>
