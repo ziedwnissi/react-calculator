@@ -1,5 +1,3 @@
-FIRST: Deal with Infinity and Nan in updateDisplay
-
 In this post we will cover approaching a React app with Test-Driven Development
 
 Upon completion of this post you will be able to:
@@ -76,7 +74,7 @@ configure({ adapter: new Adapter() });
 
 We will begin by writing some basic shallow rendering tests that will fail when the tests are ran, and then use the Red/Green/Refactor cycle to add the needed code for our tests to pass.
 
-### Red Cycle
+### Red
 
 Create *tests* directory and *Calculator.spec.js*:
 
@@ -149,7 +147,81 @@ Run the tests:
 
 All tests should fail with `ReferenceError: <COMPONENT_NAME> is not defined`. Next we wil define our components.
 
-### Create Components
+### Green
+
+Now that we have our failing render tests for the application components, we will need to write the initial components to pass the tests.
+
+We'll start with the Calculator component, navigate to *Calculator.jsx* and add the following code:
+
+```jsx
+import React from 'react';
+
+const Calculator = () => {
+  return (
+    <div className="calculator-container">
+    </div>
+  );
+}
+
+export default Calculator;
+```
+
+Then run the tests from the command line:
+
+`$ yarn test`
+
+You should now see `3 failed, 1 passing`. Let's go ahead and write the rest of the components.
+
+In *Keypad.jsx*:
+```jsx
+import React from 'react';
+
+const Keypad = () => {
+  return (
+    <div className="keypad-container">
+    </div>
+  );
+}
+
+export default Keypad;
+```
+
+In *Display.jsx*:
+
+```jsx
+import React from 'react';
+
+const Display = () => {
+  return (
+    <div className="display-container">
+    </div>
+  );
+}
+
+export default Display;
+```
+
+In *Key.jsx*:
+
+```jsx
+import React from 'react';
+
+const Key = () => {
+  return (
+    <div className="key-container">
+    </div>
+  );
+}
+
+export default Key;
+```
+
+Run tests:
+`$ yarn test`
+
+All tests should be green!
+
+### Refactor
 
 
 
@@ -161,10 +233,6 @@ Error [operator] number = '0'
 
 
 
-
-
-- before anything!
-  - change array values for numbers all to strings
 
 1. display functions
   - updates on key click
