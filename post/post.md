@@ -36,11 +36,19 @@ stateless
 
 ## Project Setup
 
-`$ git clone git_url`
-`$ cd react-calculator`
-`$ yarn start`
+The initial prroject repository contains all the files we will be using excluding *setupTests.js* as well as the *tests* directory and its contents. From the command line run the following:
 
-> The project repo was initialized using the extremely useful `create-react-app` and then modified for this project. For more information please check out 
+```sh
+$ git clone git_url
+$ cd react-calculator
+$ yarn start
+```
+
+A new browser tab should open to *localhost:3000* with the only contents of the DOM being `Hello World!`.
+
+> The project repo was initialized using the extremely useful `create-react-app` and then modified for this project. For more information on `create-react-app` check out the [project repo](https://github.com/facebook/create-react-app).
+
+### Create 
 
 While `create-react-app` comes with `jest` built in, we will need to add `enzyme` and `react-test-renderer` manually, `enzyme` requires `react-test-renderer` for React apps of version 15.5 or greater.
 
@@ -61,10 +69,10 @@ import Adapter from 'enzyme-adapter-react-16';
 configure({ adapter: new Adapter() });
 ```
 
-> `create-react-app` comes configured to run the *setupTests.js* file before each test when `$ yarn test` is ran. If you have an existing app you want to configure for use with `jest` you can use `setupTestFrameworkScriptFile` from the `jest` docs. More information [here](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string).
+> `create-react-app` comes configured to run the *setupTests.js* file before each test. If you have an existing React app you want to configure for use with `jest` you can use `setupTestFrameworkScriptFile` from the `jest` docs. More information [here](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string).
 
 
-## Begin Writing Tests
+## Begin Writing Tests and Create Components
 
 We will begin by writing some basic shallow rendering tests that will fail when the tests are ran, and then use the Red/Green/Refactor cycle to add the needed code for our tests to pass.
 
@@ -93,9 +101,55 @@ Run the test:
 
 [calculator fail image]
 
-Create the other test files:
+Create the other test files and tests:
 
 `$ touch src/tests/Display.spec.js src/tests/Keypad.spec.js touch src/tests/Key.spec.js`
+
+*Display.spec.js*:
+
+```js
+import React from 'react';
+import {shallow} from 'enzyme';
+import Display from '../components/Display/Display';
+
+it('should render', () => {
+  const wrapper = shallow(<Display />);
+  expect(wrapper.find('div').length).toEqual(1);
+});
+```
+
+*Keypad.spec.js*:
+
+```js
+import React from 'react';
+import {shallow} from 'enzyme';
+import Keypad from '../components/Keypad/Keypad';
+
+it('should render', () => {
+  const wrapper = shallow(<Keypad />);
+  expect(wrapper.find('div').length).toEqual(1);
+});
+```
+
+*Key.spec.js*:
+
+```js
+import React from 'react';
+import {shallow} from 'enzyme';
+import Key from '../components/Key/Key';
+
+it('should render', () => {
+  const wrapper = shallow(<Key />);
+  expect(wrapper.find('div').length).toEqual(1);
+});
+```
+Run the tests:
+
+`$ yarn test`
+
+All tests should fail with `ReferenceError: <COMPONENT_NAME> is not defined`. Next we wil define our components.
+
+### Create Components
 
 
 
