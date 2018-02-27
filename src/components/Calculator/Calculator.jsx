@@ -51,7 +51,8 @@ class Calculator extends Component {
   callOperator = (event) => {
     event.preventDefault();
     let {displayValue, selectedOperator, storedValue} = this.state;
-
+    const updateStoredValue = displayValue;
+    
     displayValue = parseInt(displayValue, 10);
     storedValue = parseInt(storedValue, 10);
 
@@ -69,12 +70,12 @@ class Calculator extends Component {
         displayValue = storedValue / displayValue;
         break;
       default:
-        console.log('Application Error');
+        displayValue = 'Error';
     }
 
     displayValue = displayValue.toString();
-    
-    this.setState({displayValue});
+    if (displayValue === 'NaN' || displayValue === 'Infinity') displayValue ='0';
+    this.setState({displayValue, storedValue: updateStoredValue});
   }
 
   setOperator = (event, value) => {

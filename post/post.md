@@ -1,3 +1,5 @@
+FIRST: Deal with Infinity and Nan in updateDisplay
+
 In this post we will cover approaching a React app with Test-Driven Development
 
 Upon completion of this post you will be able to:
@@ -18,14 +20,17 @@ We will be building a basic calculator application consisting of four UI compone
 This is the main UI stateful component for our application, it renders our `Display` and `Keypad` components and houses all application functions, as well as application state.
 
 ### Display Component
+
 stateless
 [Display image]
 
 ### Keypad Component
+
 stateless
 [Keypad image]
 
 ### Key Component
+
 stateless
 [Key image]
 
@@ -61,7 +66,9 @@ configure({ adapter: new Adapter() });
 
 ## Begin Writing Tests
 
-We will begin by writing some basic rendering tests that will fail when the tests are ran, and then will use the Red/Green/Refactor cycle to add the needed code for our tests to pass.
+We will begin by writing some basic shallow rendering tests that will fail when the tests are ran, and then use the Red/Green/Refactor cycle to add the needed code for our tests to pass.
+
+### Red Cycle
 
 Create *tests* directory and *Calculator.spec.js*:
 
@@ -86,13 +93,17 @@ Run the test:
 
 [calculator fail image]
 
-TESTS:
-render tests
+Create the other test files:
 
-displayValue = Infinty;
-displayValue = NaN
-displayValue over a x amount of chars
+`$ touch src/tests/Display.spec.js src/tests/Keypad.spec.js touch src/tests/Key.spec.js`
 
+
+
+
+displayValue = Infinty => '0'
+displayValue = NaN => '0'
+length of displayValue cannot be greater than 9 chars
+Error [operator] number = '0' 
 
 
 
