@@ -15,7 +15,7 @@ We will be building a basic calculator application consisting of four UI compone
 
 [Calculator image]
 
-This is the main UI stateful component for our application, it renders our `Display` and `Keypad` components and houses all application functions, as well as application state.
+This is the main UI stateful component for our application, it renders the `Display` and `Keypad` components and houses all application functions, as well as application state.
 
 ### Display Component
 
@@ -46,7 +46,7 @@ A new browser tab should open to *localhost:3000* with the only contents of the 
 
 > The project repo was initialized using the extremely useful `create-react-app` and then modified for this project. For more information on `create-react-app` check out the [project repo](https://github.com/facebook/create-react-app).
 
-### Create 
+### Create Tests Directory and setupTests.js
 
 While `create-react-app` comes with `jest` built in, we will need to add `enzyme` and `react-test-renderer` manually, `enzyme` requires `react-test-renderer` for React apps of version 15.5 or greater.
 
@@ -70,26 +70,45 @@ configure({ adapter: new Adapter() });
 > `create-react-app` comes configured to run the *setupTests.js* file before each test. If you have an existing React app you want to configure for use with `jest` you can use `setupTestFrameworkScriptFile` from the `jest` docs. More information [here](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string).
 
 
-## Begin Writing Tests and Create Components
+## Write Initial Tests and Create Components
 
-We will begin by writing some basic shallow rendering tests that will fail when the tests are ran, and then use the Red/Green/Refactor cycle to add the needed code for our tests to pass.
+We will begin by adding the initial code to *Calculator.jsx*, then writing our first test.
 
-### Red
+### Write Component and First Test
 
-Create *tests* directory and *Calculator.spec.js*:
+We'll start with the Calculator component, navigate to *Calculator.jsx* and add the following code:
+
+```jsx
+import React from 'react';
+
+const Calculator = () => {
+  return (
+    <div className="calculator-container" />
+  );
+}
+
+export default Calculator;
+```
+
+From the command line create the *tests* directory and *Calculator.spec.js* file:
 
 `$ mkdir src/test && touch src/test/Calculator.spec.js`
 
-In *Calculator.spec.js*:
+Add the first test in *Calculator.spec.js*:
 
 ```js
 import React from 'react';
 import {shallow} from 'enzyme';
 import Calculator from '../components/Calculator/Calculator';
 
-it('should render', () => {
-  const wrapper = shallow(<Calculator />);
-  expect(wrapper.find('div').length).toEqual(1);
+describe('Calculator', () => {
+  it('should render the Display and Keypad Components', () => {
+    const wrapper = shallow(<Calculator />);
+    expect(wrapper.containsAllMatchingElements([
+      <Display />,
+      <Keypad />
+    ])).to.equal(true);
+  });
 });
 ```
 
@@ -97,7 +116,105 @@ Run the test:
 
 `$ yarn test`
 
-[calculator fail image]
+Failurez:
+
+[calculator_render_fail image]
+
+### Create Display and Keypad Components
+
+In *Display.jsx*:
+
+```jsx
+import React from 'react';
+
+const Display = () => {
+  return (
+    <div className="display-container" />
+  );
+}
+
+export default Display;
+```
+
+In *Keypad.jsx*:
+
+```jsx
+import React from 'react';
+
+const Keypad = () => {
+  return (
+    <div className="keypad-container" />
+  );
+}
+
+export default Keypad;
+```
+
+Refactor *Calculator.jsx*:
+
+```jsx
+import React from 'react';
+import Display from '../Display/Display';
+import Keypad from '../Keypad/Keypad'
+
+const Calculator = () => {
+  return (
+    <div className="calculator-container">
+      <Display />
+      <Keypad />
+    </div>
+  );
+}
+
+export default Calculator;
+```
+
+Refactor *Calculator.spec.js*:
+
+```js
+import React from 'react';
+import {shallow} from 'enzyme';
+import {shallowToJson} from 'enzyme-to-json';
+import Calculator from '../components/Calculator/Calculator';
+import Display from '../components/Display/Display';
+import Keypad from '../components/Keypad/Keypad';
+
+describe('Calculator', () => {
+  it('should render the Display and Keypad Components', () => {
+    const wrapper = shallow(<Calculator />);
+    expect(wrapper.containsAllMatchingElements([
+      <Display />,
+      <Keypad />
+    ])).toEqual(true);
+  });
+});
+```
+
+Cool all should work.
+
+### Next Test
+
+Keypad should contain Key.
+
+`$ touch src/tests/Keypad.spec.js`
+
+*Keypad.spec.js*:
+
+```js
+import React from 'react';
+import {shallow} from 'enzyme';
+import Keypad from '../components/Keypad/Keypad';
+
+it('should render', () => {
+  const wrapper = shallow(<Keypad />);
+  expect(wrapper.containsAllMatchingElements([
+      <Key />
+    ])).toEqual(true);
+});
+```
+
+#############################################################################################################################
+
 
 Create the other test files and tests:
 
@@ -112,22 +229,11 @@ import Display from '../components/Display/Display';
 
 it('should render', () => {
   const wrapper = shallow(<Display />);
-  expect(wrapper.find('div').length).toEqual(1);
+  expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
 ```
 
-*Keypad.spec.js*:
 
-```js
-import React from 'react';
-import {shallow} from 'enzyme';
-import Keypad from '../components/Keypad/Keypad';
-
-it('should render', () => {
-  const wrapper = shallow(<Keypad />);
-  expect(wrapper.find('div').length).toEqual(1);
-});
-```
 
 *Key.spec.js*:
 
@@ -138,7 +244,7 @@ import Key from '../components/Key/Key';
 
 it('should render', () => {
   const wrapper = shallow(<Key />);
-  expect(wrapper.find('div').length).toEqual(1);
+  expect(shallowToJson(wrapper)).toMatchSnapshot();
 });
 ```
 Run the tests:
@@ -151,20 +257,7 @@ All tests should fail with `ReferenceError: <COMPONENT_NAME> is not defined`. Ne
 
 Now that we have our failing render tests for the application components, we will need to write the initial components to pass the tests.
 
-We'll start with the Calculator component, navigate to *Calculator.jsx* and add the following code:
 
-```jsx
-import React from 'react';
-
-const Calculator = () => {
-  return (
-    <div className="calculator-container">
-    </div>
-  );
-}
-
-export default Calculator;
-```
 
 Then run the tests from the command line:
 
@@ -172,34 +265,6 @@ Then run the tests from the command line:
 
 You should now see `3 failed, 1 passing`. Let's go ahead and write the rest of the components.
 
-In *Keypad.jsx*:
-```jsx
-import React from 'react';
-
-const Keypad = () => {
-  return (
-    <div className="keypad-container">
-    </div>
-  );
-}
-
-export default Keypad;
-```
-
-In *Display.jsx*:
-
-```jsx
-import React from 'react';
-
-const Display = () => {
-  return (
-    <div className="display-container">
-    </div>
-  );
-}
-
-export default Display;
-```
 
 In *Key.jsx*:
 
@@ -208,8 +273,7 @@ import React from 'react';
 
 const Key = () => {
   return (
-    <div className="key-container">
-    </div>
+    <div className="key-container" />
   );
 }
 
@@ -223,6 +287,7 @@ All tests should be green!
 
 ### Refactor
 
+Now that our tests pass it's time to write some more (refactor!). Let's focus on what the components will have as their contents next.
 
 
 
