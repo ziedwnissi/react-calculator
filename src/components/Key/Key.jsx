@@ -1,10 +1,5 @@
 import React from 'react';
 
-const Key = () => {
-  return (
-    <div className="key-container">
-    </div>
-  );
-}
+const Key = () => <div className="key-container" />;
 
 export default Key;

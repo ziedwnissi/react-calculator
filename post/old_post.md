@@ -19,18 +19,18 @@ This is the main UI stateful component for our application, it renders the `Disp
 
 ### Display Component
 
+stateless
 [Display image]
-stateless, receives prop displayValue
 
 ### Keypad Component
 
+stateless
 [Keypad image]
-stateless, receives props [callOperator, handleKeyPress, numbers, operators, setOperator, updateDisplay]
 
 ### Key Component
 
+stateless
 [Key image]
-stateless, receives props [handleKeyPress, keyAction, keyType, keyValue]
 
 ## Project Setup
 
@@ -123,44 +123,42 @@ SUCCESS!
 
 then add the next test:
 
+
+######## change to display should render, do display stuff (go ahaed and do props stuff in display too), then refactor to display and keypad, do keypad stuff ######
+
 ```js
 import React from 'react';
 import {shallow} from 'enzyme';
-import Calculator from './Calculator';
-import Display from '../Display/Display'
+import Calculator from '../components/Calculator/Calculator';
 
 describe('Calculator', () => {
-  it('should render a <div />', () => {
+  it('should render the Display and Keypad Components', () => {
     const wrapper = shallow(<Calculator />);
-    expect(wrapper.find('div').length).toEqual(1);
-  });
-  
-  it('should render the Display component', () => {
-    const wrapper = shallow(<Calculator />);
-    expect(wrapper.containsMatchingElement(<Display />)).toEqual(true);
+    expect(wrapper.containsAllMatchingElements([
+      <Display />,
+      <Keypad />
+    ])).to.equal(true);
   });
 });
 ```
 
 Failurez!
 
-### Create Display Test File and Initial Component
+### Create Display and Keypad Components
 
-Before we write the `Display` component, let's add our `Display` test file and setup a shallow render test like we did with the `Calculator` component.
-
-From the command line create *Display.spec.js*:
+Create Display test file:
 
 `$ touch src/components/Display/Display.spec.js`
 
-Write our shallow render test in *Display.spec.jsx*:
+In *Display.spec.jsx*:
 
 ```js
 import React from 'react';
-import {shallow} from 'enzyme';
+import {mount, shallow} from 'enzyme';
 import Display from './Display';
 
 describe('Display', () => {
-  it('should render a <div />', () => {
+  it('renders a <div />', () => {
     const wrapper = shallow(<Display />);
     expect(wrapper.find('div').length).toEqual(1);
   });
@@ -179,98 +177,8 @@ const Display = () => <div className="display-container" />;
 export default Display;
 ```
 
-Both test suites pass!
+display.spec.js passes, calculator.spec.js fails
 
-### Continue Writing `Display` Component Tests and Building Out Component
-
-#### Display has default prop `displayValue`
-
-in *Display.spec.js*:
-
-```jsx
-import React from 'react';
-import {mount, shallow} from 'enzyme';
-import Display from './Display';
-
-describe('Display', () => {
-  it('should render a <div />', () => {
-    const wrapper = shallow(<Display />);
-    expect(wrapper.find('div').length).toEqual(1);
-  });
-
-  it('has default prop displayValue', () => {
-    const wrapper = mount(<Display />);
-    expect(wrapper.props().displayValue).toEqual('default');
-  });
-
-  it('has settable prop displayValue', () => {
-    const wrapper = mount(<Display />);
-    wrapper.setProps({displayValue: 'new value'});
-    expect(wrapper.prop('displayValue')).toEqual('new value');
-  });
-});
-```
-
-New Test failz...
-
-> diff between shallow and mount...
-
-Refactor *Display.jsx* and add propTypes, defaultProps:
-
-```jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-
-const Display = ({displayValue}) => <div className="display-container" />;
-
-Display.propTypes = {displayValue: PropTypes.string.isRequired};
-
-Display.defaultProps = {displayValue: 'default'};
-
-export default Display;
-```
-
-Passes!
-
-#### Renders `displayValue` to the DOM
-
-```js
-import React from 'react';
-import {mount, shallow} from 'enzyme';
-import Display from './Display';
-
-describe('Display', () => {
-  ...
-
-  it('renders the value of displayValue to the DOM', () => {
-    const wrapper = mount(<Display />);
-    expect(wrapper.text()).toEqual('default');
-    wrapper.setProps({displayValue: 'new value'});
-    expect(wrapper.text()).toEqual('new value');
-  });
-});
-```
-
-Fail...
-
-Refactor *Display.jsx*:
-
-```jsx
-...
-const Display = ({displayValue}) => {
-  return (
-    <div className="display-container">
-      <p className="display-value">
-        {displayValue}
-      </p>
-    </div>
-)};
-...
-```
-
-Pass!
-
-########### Start here #######################
 `$ touch src/components/Keypad/Keypad.spec.js`
 
 In *Keypad.spec.js*:
@@ -417,7 +325,43 @@ export default Keypad;
 
 ### Test Display Component
 
+Display has prop `displayValue`:
 
+in *Display.spec.js:
+
+```jsx
+import React from 'react';
+import {mount} from 'enzyme';
+import Display from './Display';
+
+describe('Display', () => {
+  it('should set prop displayValue', () => {
+    const wrapper = mount(<Display displayValue="testDisplay" />);
+    expect(wrapper.prop('displayValue')).toEqual('testDisplay');
+    wrapper.setProps({displayValue: 'newDisplay'});
+    expect(wrapper.prop('displayValue')).toEqual('newDisplay');
+  });
+});
+```
+
+Test failz...
+
+> diff between shallow and mount...
+
+Refactor *Display.jsx* and add propTypes, defaultProps:
+
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+
+const Display = ({displayValue}) => <div className="display-container" />;
+
+Display.propTypes = {displayValue: PropTypes.string.isRequired};
+
+Display.defaultProps = {displayValue: '0'};
+
+export default Display;
+```
 
 
 ### Test Key Component
