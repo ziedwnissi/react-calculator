@@ -72,17 +72,15 @@ configure({ adapter: new Adapter() });
 
 ## Write Initial Tests and Create Components
 
-We will begin by adding the initial code to *Calculator.jsx*, then writing our first test.
+### Create First Test
 
-### Write Component and First Test
+We will begin by adding the first failing test for the `Calculator` component, and then write the code for it to pass.
 
-We'll start by testing the Calculator component. We know that it will wrap our Keypad and Display components... 
-
-From the command line create the *tests* directory and *Calculator.spec.js* file:
+From the command line create the *Calculator.spec.js* file:
 
 `$ touch src/components/Calulator/Calculator.spec.js`
 
-Add the first test in *Calculator.spec.js*:
+Next add a shallow render test in *Calculator.spec.js*:
 
 ```js
 import React from 'react';
@@ -101,9 +99,7 @@ Run the test:
 
 `$ yarn test`
 
-FAIL.
-
-navigate to *Calculator.jsx* and add the following code:
+The test will fail as the `Calculator` component has not been written. Navigate to *Calculator.jsx* and add the following code:
 
 ```jsx
 import React from 'react';
@@ -117,11 +113,11 @@ Run the test:
 
 `$ yarn test`
 
-SUCCESS!
+The first test should now pass!
 
-> You may have noticed if you didn't exit the test suite it is still running on the command line. As long as it is running it will continue watching your files for changes and will rerun the tests on file changes. You may leave it running as you continue through this tutorial, or can exit and run it at your leisure.
+> You may have noticed if you didn't exit the test suite it is still running on the command line. As long as it is running it will continue watching your files for changes and will run the tests on file changes. You may leave it running as you continue through this tutorial, or can exit and run it at your leisure.
 
-then add the next test:
+From the mockups we know that the `Calculator` compoponent will contain the Display and Keypad components. Next step is to write a test that checks for the presence of the `Display` component in `Calculator`. Add the test in *Calculator.spec.js*:
 
 ```js
 import React from 'react';
@@ -142,9 +138,9 @@ describe('Calculator', () => {
 });
 ```
 
-Failurez!
+This test will fail as the `Display` component does not exist.
 
-### Create Display Test File and Initial Component
+### Create Display Test File and Initial Display Component
 
 Before we write the `Display` component, let's add our `Display` test file and setup a shallow render test like we did with the `Calculator` component.
 
@@ -167,9 +163,9 @@ describe('Display', () => {
 });
 ```
 
-Fails!
+As the `Display` component still does not exist, the test will fail.
 
-In *Display.jsx*:
+Add the component in *Display.jsx*:
 
 ```jsx
 import React from 'react';
@@ -181,9 +177,9 @@ export default Display;
 
 Both test suites pass!
 
-### Continue Writing `Display` Component Tests and Building Out Component
+## Continue Writing `Display` Component Tests and Building Out Component
 
-#### Display has default prop `displayValue`
+### Display has default prop `displayValue`
 
 in *Display.spec.js*:
 
@@ -193,10 +189,7 @@ import {mount, shallow} from 'enzyme';
 import Display from './Display';
 
 describe('Display', () => {
-  it('should render a <div />', () => {
-    const wrapper = shallow(<Display />);
-    expect(wrapper.find('div').length).toEqual(1);
-  });
+  ...
 
   it('has default prop displayValue', () => {
     const wrapper = mount(<Display />);
@@ -215,7 +208,7 @@ New Test failz...
 
 > diff between shallow and mount...
 
-Refactor *Display.jsx* and add propTypes, defaultProps:
+Refactor *Display.jsx* and add `[propTypes, defaultProps]`:
 
 ```jsx
 import React from 'react';
@@ -232,7 +225,7 @@ export default Display;
 
 Passes!
 
-#### Renders `displayValue` to the DOM
+### Renders `displayValue` to the DOM
 
 ```js
 import React from 'react';
@@ -270,7 +263,7 @@ const Display = ({displayValue}) => {
 
 Pass!
 
-#### Add Snapshot Testing
+### Add Snapshot Testing
 
 Snapshots are not part of TDD as they are generated after a component has been written, but let's add them since we now have the completed component in case of any unexpected changes...
 
@@ -287,6 +280,32 @@ describe('Display', () => {
   ...
 });
 ```
+
+## Add `Keypad` Component and Tests
+
+Now that we have the `Display` component built out, we need to add in our `Keypad` component. We'll start by testing for it in our `Calculator` component tests. Refactor the `should render the Display component` test in *Calculator.spec.js*:
+
+```js
+import React from 'react';
+...
+import Keypad from '../Keypad/Keypad';
+
+describe('Calculator', () => {
+  ...
+
+  it('should render the Display and Keypad Components', () => {
+    const wrapper = shallow(<Calculator />);
+    expect(wrapper.containsAllMatchingElements([
+      <Display />,
+      <Keypad />
+    ])).toEqual(true);
+  });
+});
+```
+
+Failure, as the `Keypad` component does not yet exist.
+
+=====>NOTE TO READER: Below will follow a similar pattern as above for Display component, and then go in to the Key component
 
 ########### Start here #######################
 
