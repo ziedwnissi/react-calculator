@@ -270,7 +270,26 @@ const Display = ({displayValue}) => {
 
 Pass!
 
+#### Add Snapshot Testing
+
+Snapshots are not part of TDD as they are generated after a component has been written, but let's add them since we now have the completed component in case of any unexpected changes...
+
+*Display.spec.js*:
+
+```jsx
+...
+describe('Display', () => {
+  it('should render correctly', () => {
+    const wrapper = shallow(<Display />);
+    expect(wrapper).toMatchSnapshot();
+  });
+  
+  ...
+});
+```
+
 ########### Start here #######################
+
 `$ touch src/components/Keypad/Keypad.spec.js`
 
 In *Keypad.spec.js*:
