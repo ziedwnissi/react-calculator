@@ -15,7 +15,7 @@ describe('Display', () => {
 
   it('has default prop displayValue', () => {
     const wrapper = mount(<Display />);
-    expect(wrapper.props().displayValue).toEqual('default');
+    expect(wrapper.prop('displayValue')).toEqual('default');
   });
 
   it('has settable prop displayValue', () => {

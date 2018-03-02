@@ -175,6 +175,23 @@ const Display = () => <div className="display-container" />;
 export default Display;
 ```
 
+Then add the `Display` component to *Calculator.jsx*:
+
+```jsx
+import React from 'react';
+import Display from '../Display/Display';
+
+const Calculator = () => {
+  return (
+    <div className="calculator-container">
+      <Display />
+    </div>
+  );
+}
+
+export default Calculator;
+```
+
 Both test suites pass!
 
 ## Continue Writing `Display` Component Tests and Building Out Component
@@ -305,13 +322,11 @@ describe('Calculator', () => {
 
 Failure, as the `Keypad` component does not yet exist.
 
-=====>NOTE TO READER: Below will follow a similar pattern as above for Display component, and then go in to the Key component
-
-########### Start here #######################
+Before we write the `Keypad` component, let's follow the pattern we used with the `Display` component. First we need to add *Keypad.spec.js* from the command line:
 
 `$ touch src/components/Keypad/Keypad.spec.js`
 
-In *Keypad.spec.js*:
+Then add the `Keypad` shallow render test in *Keypad.spec.js*:
 
 ```js
 import React from 'react';
@@ -326,9 +341,9 @@ describe('Keypad', () => {
 });
 ```
 
-Failzzzz
+More fail.
 
-In *Keypad.jsx*:
+Now update *Keypad.jsx* with the following:
 
 ```jsx
 import React from 'react';
@@ -338,84 +353,197 @@ const Keypad = () => <div className="keypad-container" />;
 export default Keypad;
 ```
 
-keypad.spec.js passes, calculator.spec.js fails
+All pass!
 
-Refactor *Calculator.jsx* to include Display, Keypad:
-
-```jsx
-import React from 'react';
-import Display from '../Display/Display';
-import Keypad from '../Keypad/Keypad'
-
-const Calculator = () => {
-  return (
-    <div className="calculator-container">
-      <Display />
-      <Keypad />
-    </div>
-  );
-}
-
-export default Calculator;
-```
-
-Refactor *Calculator.spec.js*:
+Next, test that the `defaultProps` exists and are settable. In *Keypad.spec.js* add the following, don't forget to import `mount`:
 
 ```js
 import React from 'react';
-import {shallow} from 'enzyme';
-import {shallowToJson} from 'enzyme-to-json';
-import Calculator from '../components/Calculator/Calculator';
-import Display from '../components/Display/Display';
-import Keypad from '../components/Keypad/Keypad';
+import {mount, shallow} from 'enzyme';
+import Keypad from './Keypad';
 
-describe('Calculator', () => {
-  it('should render the Display and Keypad Components', () => {
-    const wrapper = shallow(<Calculator />);
-    expect(wrapper.containsAllMatchingElements([
-      <Display />,
-      <Keypad />
-    ])).toEqual(true);
+describe('Keypad', () => {
+  ...
+
+  it('has default props numbers and operators', () => {
+    const wrapper = mount(<Keypad />);
+    expect(wrapper.prop('numbers')).toEqual([]);
+    expect(wrapper.prop('operators')).toEqual([]);
+  });
+
+  it('has settable props numbers and operators', () => {
+    const wrapper = mount(<Keypad />);
+    wrapper.setProps({numbers: ['test']});
+    expect(wrapper.prop('numbers')).toEqual(['test']);
+    wrapper.setProps({operators: ['test']});
+    expect(wrapper.prop('operators')).toEqual(['test']);
   });
 });
 ```
 
-Cool all should work.
+Fail time.
 
-### Next Test
+Update *Keypad.jsx* with `PropTypes` and `defaultProps`:
 
-Keypad should contain Key.
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
 
-*Keypad.spec.js*:
+const Keypad = () => <div className="keypad-container" />;
+
+Keypad.propTypes = {
+  numbers: PropTypes.array.isRequired,
+  operators: PropTypes.array.isRequired,
+}
+
+Keypad.defaultProps = {
+  numbers: [],
+  operators: [],
+}
+
+export default Keypad;
+```
+
+Next test:
+
+Test for `numbers` DOM rendering:
+
+Update *Keypad.spec.js* with the test. Because we only want the values of the `numbers` prop, we will wrap the... blah, numbers-container:
 
 ```js
-import React from 'react';
+...
+
+describe('Keypad', () => {
+  ...
+
+  it('renders the values of numbers to the DOM', () => {
+    const wrapper = mount(<Keypad />);
+    expect(wrapper.text()).toEqual('');
+    wrapper.setProps({numbers: ['0', '1', '2']});
+    expect(wrapper.text()).toEqual('012');
+  });
+});
+```
+
+Then update *Keypad.jsx*:
+
+```jsx
+...
+const Keypad = ({numbers}) => {
+
+  numbers = numbers.map(number => {
+    return (
+      <p key={number}>{number}</p>
+    );
+  });
+
+  return (
+    <div className="keypad-container">
+      <div className="numbers-container">
+        {numbers}
+      </div>
+    </div>
+  );
+}
+...
+```
+
+> Note abt keys, only need to be unique to component...
+
+Breaks `should render a <div />`. Update the test:
+
+```jsx
+...
+describe('Keypad', () => {
+  it('should render 2 <div>\'s', () => {
+    const wrapper = shallow(<Keypad />);
+    expect(wrapper.find('div').length).toEqual(2);
+  });
+
+  ...
+});
+```
+
+All pass!!!!!
+
+Follow the same pattern for 'operators':
+
+Update *Keypad.jsx*:
+```jsx
+...
+const Keypad = ({numbers, operators}) => {
+
+  numbers = numbers.map(number => {
+    return (
+      <p key={number}>{number}</p>
+    );
+  });
+
+  operators = operators.map(operator => {
+    return (
+      <p key={operator}>{operator}</p>
+    );
+  });
+
+  return (
+    <div className="keypad-container">
+      <div className="numbers-container">
+        {numbers}
+      </div>
+      <div className="operators-container">
+        {operators}
+      </div>
+    </div>
+  );
+}
+...
+```
+
+Breaks `should render 2 <div>'s`. Update the test:
+
+```jsx
+...
+describe('Keypad', () => {
+  it('should render 3 <div>\'s', () => {
+    const wrapper = shallow(<Keypad />);
+    expect(wrapper.find('div').length).toEqual(3);
+  });
+
+  ...
+});
+```
+
+Tests are ok....
+
+### Add Key Compoment Test
+
+add render test in *Keypad.spec.js*:
+
+```js
 ...
 import Key from '../Key/Key';
 
 describe('Keypad', () => {
   ...
-
+  
   it('should render the Key component', () => {
-  const wrapper = shallow(<Keypad />);
-  expect(wrapper.containsAllMatchingElements([
+    const wrapper = shallow(<Keypad />);
+    expect(wrapper.containsAllMatchingElements([
       <Key />
     ])).toEqual(true);
   });
 });
 ```
 
-Failz
-
 Create test file:
 
 `$ touch src/components/Key/Key.spec.js`
 
-In *Key.spec.js*:
+Create shallow render test for `Key` in *Key.spec.js*:
 
 ```js
 import React from 'react';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import Key from './Key';
 
 describe('Key', () => {
@@ -426,7 +554,7 @@ describe('Key', () => {
 });
 ```
 
-In *key.jsx*:
+Add component in *Key.jsx*:
 
 ```jsx
 import React from 'react';
@@ -436,146 +564,74 @@ const Key = () => <div className="key-container" />;
 export default Key;
 ```
 
-Refactor *Keypad.jsx* to include `Key`:
+*Key.spec.js* passes, *Keypad.jsx* fails
+
+Import `Key` component in *Keypad.js* and call in component:
 
 ```jsx
-import React from 'react';
+...
 import Key from '../Key/Key';
 
-const Keypad = () => {
+const Keypad = ({numbers, operators}) => {
+  ...
   return (
     <div className="keypad-container">
+      <div className="numbers-container">
+        {numbers}
+      </div>
+      <div className="operators-container">
+        {operators}
+      </div>
       <Key />
     </div>
   );
 }
-
-export default Keypad;
+...
 ```
 
-### Test Display Component
+ALL PASS
 
+### More Key Tests
 
-
-
-### Test Key Component
-
-Key receives props [keyType, keyValue]
-
-
-#############################################################################################################################
-
-
-
-Create the other test files and tests:
-
-`$ touch src/tests/Display.spec.js src/tests/Keypad.spec.js touch src/tests/Key.spec.js`
-
-*Display.spec.js*:
-
-```js
-import React from 'react';
-import {shallow} from 'enzyme';
-import Display from '../components/Display/Display';
-
-it('should render', () => {
-  const wrapper = shallow(<Display />);
-  expect(shallowToJson(wrapper)).toMatchSnapshot();
-});
-```
-
-
-
-*Key.spec.js*:
-
-```js
-import React from 'react';
-import {shallow} from 'enzyme';
-import Key from '../components/Key/Key';
-
-it('should render', () => {
-  const wrapper = shallow(<Key />);
-  expect(shallowToJson(wrapper)).toMatchSnapshot();
-});
-```
-Run the tests:
-
-`$ yarn test`
-
-All tests should fail with `ReferenceError: <COMPONENT_NAME> is not defined`. Next we wil define our components.
-
-### Green
-
-Now that we have our failing render tests for the application components, we will need to write the initial components to pass the tests.
-
-
-
-Then run the tests from the command line:
-
-`$ yarn test`
-
-You should now see `3 failed, 1 passing`. Let's go ahead and write the rest of the components.
-
-
-In *Key.jsx*:
-
+Next, test that the `defaultProps` exists and are settable. In *Key.spec.js* add the following, don't forget to import `mount`:
 ```jsx
 import React from 'react';
+import {shallow, mount} from 'enzyme';
+import Key from './Key';
 
-const Key = () => {
-  return (
-    <div className="key-container" />
-  );
-}
+describe('Key', () => {
+  ...
+  it('has default props keyAction and KeyType', () => {
+    const wrapper = mount(<Key />);
+    expect(wrapper.prop('keyType')).toEqual('default');
+    expect(wrapper.prop('keyAction')).toEqual('default');
+  });
 
-export default Key;
+  it('has settable props keyAction and KeyType', () => {
+    const wrapper = mount(<Key />);
+    wrapper.setProps({keyAction: 'test'});
+    expect(wrapper.prop('keyAction')).toEqual('test');
+    wrapper.setProps({keyType: 'test'});
+    expect(wrapper.prop('keyType')).toEqual('test');
+  });
+});
 ```
 
-Run tests:
-`$ yarn test`
+########### Start here ################################## Start here #######################
+########### Start here ################################## Start here #######################
+########### Start here ################################## Start here #######################
+########### Start here ################################## Start here #######################
 
-All tests should be green!
-
-### Refactor
-
-Now that our tests pass it's time to write some more (refactor!). Let's focus on what the components will have as their contents next.
-
-
-
+> Function tests for updateDisplay
 displayValue = Infinty => '0'
 displayValue = NaN => '0'
 length of displayValue cannot be greater than 9 chars
 Error [operator] number = '0' 
+If '.' is present no adding '.'
 
+> function tests for callOperator
+If 'submit' and no storedValue or selectedOperator, return 0
 
-
-
-1. display functions
-  - updates on key click
-    - in Calculator.jsx
-      - refactor to Class based component
-      - add displayValue to this.state
-      - add updateDisplay function to constructor and pass to Keypad.jsx
-    
-    - in Keypad.jsx
-      - pass keyAction={updateDisplay} to numbered instances of Key.jsx
-
-    - in Key.jsx
-      - onClick={(event) => keyAction(event, keyValue)} to div wrapper
-
-    - in Calculator.jsx
-      - in updateDisplay change: 
-          displayValue += value 
-        to: 
-          displayValue === '0' ? displayValue = value : displayValue += value;
-        to account for leading '0'
-
-        - create check for "ce" and handle it
-        
-  - no more than one decimal
-  - if display leading with 0 and display != 0, trim 0
-
-1. key functions
-  - number update function
-  - action key functions
-  - submit key function
+(fixed but should write a test) weird behavior of calculator:
+enter 10, press +, then press -, then 2, then =. should equal 12, instead equals -2.
+storedValue is getting updated to 0 when the second operator (-) is entered
