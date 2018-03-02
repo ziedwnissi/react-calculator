@@ -9,9 +9,9 @@ class Calculator extends Component {
     super(props);
 
     this.state = {
-      operators: ['/', 'x', '-', '+'],
       displayValue: '0',
       numbers: ['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0', 'ce'],
+      operators: ['/', 'x', '-', '+'],
       selectedOperator: '',
       storedValue: '',
     }
@@ -33,6 +33,9 @@ class Calculator extends Component {
   handleKeyPress = (event) => {
     const {numbers, operators} = this.state;
     
+    if (event.key === 'Backspace') this.updateDisplay(event, 'ce');
+    if (event.key === 'Enter' || event.key === '=') this.callOperator(event);
+
     numbers.forEach((number) => {
       if (event.key === number){
         this.updateDisplay(event, number);
@@ -44,8 +47,6 @@ class Calculator extends Component {
         this.setOperator(event, operator);
       }
     });
-
-    if (event.key === 'Enter' || event.key === '=') this.callOperator(event);
   }
 
   callOperator = (event) => {
@@ -70,21 +71,27 @@ class Calculator extends Component {
         displayValue = storedValue / displayValue;
         break;
       default:
-        displayValue = 'Error';
+        displayValue = '0';
     }
 
     displayValue = displayValue.toString();
+    selectedOperator = '';
     if (displayValue === 'NaN' || displayValue === 'Infinity') displayValue ='0';
-    this.setState({displayValue, storedValue: updateStoredValue});
+    this.setState({displayValue, selectedOperator, storedValue: updateStoredValue});
   }
 
   setOperator = (event, value) => {
     event.preventDefault();
     let {displayValue, selectedOperator, storedValue} = this.state;
 
-    storedValue = displayValue;
-    displayValue = '0';
-    selectedOperator = value;
+    if (selectedOperator === '') {
+      storedValue = displayValue;
+      displayValue = '0';
+      selectedOperator = value;  
+    } else {
+      selectedOperator = value;
+    }
+
     this.setState({displayValue, selectedOperator, storedValue});
   }
 
@@ -92,13 +99,19 @@ class Calculator extends Component {
     event.preventDefault();
     let {displayValue} = this.state;
     
+    // prevent multiple occurences of '.'
+    if (value === '.' && displayValue.includes('.')) value = '';
+    
     if (value === 'ce') {
+      // deletes last char in displayValue
       displayValue = displayValue.substr(0, displayValue.length - 1);
+      // set displayValue to '0' if displayValue is empty string
+      if (displayValue === '') displayValue = '0';
     } else {
+      // replace displayValue with value if displayValue equal to '0'
+      // else concatenate displayValue and value
       displayValue === '0' ? displayValue = value : displayValue += value;
     }
-    
-    if (displayValue === '') displayValue = '0';
 
     this.setState({displayValue});
   }
@@ -109,7 +122,8 @@ class Calculator extends Component {
     return (
       <div className="calculator-container">
         <Display displayValue={displayValue} />
-        <Keypad 
+        <Keypad
+          handleKeyPress={this.handleKeyPress} 
           operators={operators}
           callOperator={this.callOperator}
           numbers={numbers}

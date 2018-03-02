@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Key.css';
 
 const Key = ({handleKeyPress, keyAction, keyType, keyValue}) => {
@@ -15,6 +16,18 @@ const Key = ({handleKeyPress, keyAction, keyType, keyValue}) => {
       </p>
     </div>
   );
+}
+
+Key.propTypes = {
+  handleKeyPress: PropTypes.func.isRequired, 
+  keyAction: PropTypes.func.isRequired, 
+  keyType: PropTypes.string.isRequired, 
+  keyValue: PropTypes.string.isRequired,
+}
+
+Key.defaultProps = {
+  keyType: 'default',
+  keyAction: 'default',
 }
 
 export default Key;

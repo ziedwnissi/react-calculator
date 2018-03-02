@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Keypad.css';
 
 import Key from '../Key/Key';
@@ -47,6 +48,20 @@ const Keypad = ({operators, callOperator, handleKeyPress, numbers, setOperator, 
       </div>
     </div>
   );
+}
+
+Keypad.propTypes = {
+  callOperator: PropTypes.func.isRequired, 
+  handleKeyPress: PropTypes.func.isRequired, 
+  numbers: PropTypes.array.isRequired, 
+  operators: PropTypes.array.isRequired,
+  setOperator: PropTypes.func.isRequired, 
+  updateDisplay: PropTypes.func.isRequired
+}
+
+Keypad.defaultProps = {
+  numbers: [], 
+  operators: [],
 }
 
 export default Keypad;
