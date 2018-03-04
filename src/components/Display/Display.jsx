@@ -12,6 +12,4 @@ const Display = ({displayValue}) => {
 
 Display.propTypes = {displayValue: PropTypes.string.isRequired};
 
-Display.defaultProps = {displayValue: 'default'};
-
 export default Display;

@@ -9,7 +9,7 @@ Upon completion of this post you will be able to:
 
 ## Project Overview
 
-We will be building a basic calculator application consisting of four UI components using Test-Driven Development. Below are screenshots of the completed components with short descriptions:
+We will be building a basic calculator application consisting of four UI components using Test-Driven Development. We will write for test suites, one for each Component to house the tests. Below are screenshots of the completed components with short descriptions:
 
 ### Calculator Component
 
@@ -36,11 +36,9 @@ stateless, receives props [handleKeyPress, keyAction, keyType, keyValue]
 
 The initial prroject repository contains all the files we will be using excluding *setupTests.js* as well as the *tests* directory and its contents. From the command line run the following:
 
-```sh
-$ git clone git_url
-$ cd react-calculator
-$ yarn start
-```
+`$ git clone git_url`
+`$ cd react-calculator`
+`$ yarn start`
 
 A new browser tab should open to *localhost:3000* with the only contents of the DOM being `Hello World!`.
 
@@ -70,9 +68,9 @@ configure({ adapter: new Adapter() });
 > `create-react-app` comes configured to run the *setupTests.js* file before each test. If you have an existing React app you want to configure for use with `jest` you can use `setupTestFrameworkScriptFile` from the `jest` docs. More information [here](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string).
 
 
-## Write Initial Tests and Create Components
+## Write Shallow Render Tests and Create Components
 
-### Create First Test
+### Write `Calculator` Shallow Render Test (Red)
 
 We will begin by adding the first failing test for the `Calculator` component, and then write the code for it to pass.
 
@@ -99,7 +97,11 @@ Run the test:
 
 `$ yarn test`
 
-The test will fail as the `Calculator` component has not been written. Navigate to *Calculator.jsx* and add the following code:
+The test will fail as the `Calculator` component has not been written. 
+
+### Write `Calculator` Component (Green)
+
+Navigate to *Calculator.jsx* and add the following code:
 
 ```jsx
 import React from 'react';
@@ -117,6 +119,8 @@ The first test should now pass!
 
 > You may have noticed if you didn't exit the test suite it is still running on the command line. As long as it is running it will continue watching your files for changes and will run the tests on file changes. You may leave it running as you continue through this tutorial, or can exit and run it at your leisure.
 
+### Check for `Display` in `Calculator`
+
 From the mockups we know that the `Calculator` compoponent will contain the Display and Keypad components. Next step is to write a test that checks for the presence of the `Display` component in `Calculator`. Add the test in *Calculator.spec.js*:
 
 ```js
@@ -126,10 +130,7 @@ import Calculator from './Calculator';
 import Display from '../Display/Display'
 
 describe('Calculator', () => {
-  it('should render a <div />', () => {
-    const wrapper = shallow(<Calculator />);
-    expect(wrapper.find('div').length).toEqual(1);
-  });
+  ...
   
   it('should render the Display component', () => {
     const wrapper = shallow(<Calculator />);
@@ -140,15 +141,11 @@ describe('Calculator', () => {
 
 This test will fail as the `Display` component does not exist.
 
-### Create Display Test File and Initial Display Component
-
-Before we write the `Display` component, let's add our `Display` test file and setup a shallow render test like we did with the `Calculator` component.
-
-From the command line create *Display.spec.js*:
+Before we write the `Display` component, let's add our `Display` test file and setup a shallow render test in the new file like we did with the `Calculator` component. From the command line create *Display.spec.js*:
 
 `$ touch src/components/Display/Display.spec.js`
 
-Write our shallow render test in *Display.spec.jsx*:
+Write the shallow render test in *Display.spec.jsx*:
 
 ```js
 import React from 'react';
@@ -163,69 +160,9 @@ describe('Display', () => {
 });
 ```
 
-As the `Display` component still does not exist, the test will fail.
+As the `Display` component still does not exist, the test will fail. Add the component in *Display.jsx* and import `PropTypes`, 
 
-Add the component in *Display.jsx*:
-
-```jsx
-import React from 'react';
-
-const Display = () => <div className="display-container" />;
-
-export default Display;
-```
-
-Then add the `Display` component to *Calculator.jsx*:
-
-```jsx
-import React from 'react';
-import Display from '../Display/Display';
-
-const Calculator = () => {
-  return (
-    <div className="calculator-container">
-      <Display />
-    </div>
-  );
-}
-
-export default Calculator;
-```
-
-Both test suites pass!
-
-## Continue Writing `Display` Component Tests and Building Out Component
-
-### Display has default prop `displayValue`
-
-in *Display.spec.js*:
-
-```jsx
-import React from 'react';
-import {mount, shallow} from 'enzyme';
-import Display from './Display';
-
-describe('Display', () => {
-  ...
-
-  it('has default prop displayValue', () => {
-    const wrapper = mount(<Display />);
-    expect(wrapper.props().displayValue).toEqual('default');
-  });
-
-  it('has settable prop displayValue', () => {
-    const wrapper = mount(<Display />);
-    wrapper.setProps({displayValue: 'new value'});
-    expect(wrapper.prop('displayValue')).toEqual('new value');
-  });
-});
-```
-
-New Test failz...
-
-> diff between shallow and mount...
-
-Refactor *Display.jsx* and add `[propTypes, defaultProps]`:
+TODO: talk about type checking:
 
 ```jsx
 import React from 'react';
@@ -235,14 +172,29 @@ const Display = ({displayValue}) => <div className="display-container" />;
 
 Display.propTypes = {displayValue: PropTypes.string.isRequired};
 
-Display.defaultProps = {displayValue: 'default'};
-
 export default Display;
 ```
 
-Passes!
+Then import and add the `Display` component inside of *Calculator.jsx*. Make sure to pass the `displayValue` prop to `Display`:
 
-### Renders `displayValue` to the DOM
+```jsx
+import React from 'react';
+import Display from '../Display/Display';
+
+const Calculator = () => {
+  return (
+    <div className="calculator-container">
+      <Display displayValue="" />
+    </div>
+  );
+}
+
+export default Calculator;
+```
+
+Both test suites pass!
+
+### `Display` renders `displayValue` to the DOM
 
 ```js
 import React from 'react';
@@ -253,10 +205,8 @@ describe('Display', () => {
   ...
 
   it('renders the value of displayValue to the DOM', () => {
-    const wrapper = mount(<Display />);
-    expect(wrapper.text()).toEqual('default');
-    wrapper.setProps({displayValue: 'new value'});
-    expect(wrapper.text()).toEqual('new value');
+    const wrapper = mount(<Display displayValue="test" />);
+    expect(wrapper.text()).toEqual('test');;
   });
 });
 ```
@@ -280,11 +230,11 @@ const Display = ({displayValue}) => {
 
 Pass!
 
-### Add Snapshot Testing
+### Add Snapshot Testing for `Display`
 
-Snapshots are not part of TDD as they are generated after a component has been written, but let's add them since we now have the completed component in case of any unexpected changes...
+Snapshots are not part of TDD as they are generated after a component has been written, but let's add them since we now have the completed component in case of any unexpected changes [TODO]
 
-*Display.spec.js*:
+Add `toMatchSnapshot` in *Display.spec.js* as the first test in the file:
 
 ```jsx
 ...
@@ -298,7 +248,7 @@ describe('Display', () => {
 });
 ```
 
-## Add `Keypad` Component and Tests
+### Add `Keypad` Component and Tests
 
 Now that we have the `Display` component built out, we need to add in our `Keypad` component. We'll start by testing for it in our `Calculator` component tests. Refactor the `should render the Display component` test in *Calculator.spec.js*:
 
@@ -313,8 +263,11 @@ describe('Calculator', () => {
   it('should render the Display and Keypad Components', () => {
     const wrapper = shallow(<Calculator />);
     expect(wrapper.containsAllMatchingElements([
-      <Display />,
-      <Keypad />
+      <Display displayValue="" />,
+      <Keypad 
+        numbers={[]}
+        operators={[]}
+      />
     ])).toEqual(true);
   });
 });
@@ -343,47 +296,7 @@ describe('Keypad', () => {
 
 More fail.
 
-Now update *Keypad.jsx* with the following:
-
-```jsx
-import React from 'react';
-
-const Keypad = () => <div className="keypad-container" />;
-
-export default Keypad;
-```
-
-All pass!
-
-Next, test that the `defaultProps` exists and are settable. In *Keypad.spec.js* add the following, don't forget to import `mount`:
-
-```js
-import React from 'react';
-import {mount, shallow} from 'enzyme';
-import Keypad from './Keypad';
-
-describe('Keypad', () => {
-  ...
-
-  it('has default props numbers and operators', () => {
-    const wrapper = mount(<Keypad />);
-    expect(wrapper.prop('numbers')).toEqual([]);
-    expect(wrapper.prop('operators')).toEqual([]);
-  });
-
-  it('has settable props numbers and operators', () => {
-    const wrapper = mount(<Keypad />);
-    wrapper.setProps({numbers: ['test']});
-    expect(wrapper.prop('numbers')).toEqual(['test']);
-    wrapper.setProps({operators: ['test']});
-    expect(wrapper.prop('operators')).toEqual(['test']);
-  });
-});
-```
-
-Fail time.
-
-Update *Keypad.jsx* with `PropTypes` and `defaultProps`:
+Now add the `jsx` to *Keypad.jsx*:
 
 ```jsx
 import React from 'react';
@@ -396,19 +309,16 @@ Keypad.propTypes = {
   operators: PropTypes.array.isRequired,
 }
 
-Keypad.defaultProps = {
-  numbers: [],
-  operators: [],
-}
-
 export default Keypad;
 ```
 
+All pass!
+
 Next test:
 
-Test for `numbers` DOM rendering:
+### Test for `numbers` and `operators` DOM rendering
 
-Update *Keypad.spec.js* with the test. Because we only want the values of the `numbers` prop, we will wrap the... blah, numbers-container:
+In the same way that we tested for the rendering of  the `displayValue` prop in the `Display` component, we will write DOM rednring tests for both the `numbers` and `operators` props in the `Keypad` component. In *Keypad.spec.js* start with  the `numbers` test:
 
 ```js
 ...
@@ -448,7 +358,7 @@ const Keypad = ({numbers}) => {
 ...
 ```
 
-> Note abt keys, only need to be unique to component...
+> TODO: Note abt keys, only need to be unique to component...
 
 Breaks `should render a <div />`. Update the test:
 
@@ -466,9 +376,25 @@ describe('Keypad', () => {
 
 All pass!!!!!
 
-Follow the same pattern for 'operators':
+Follow the same pattern for 'operators', in *Keypad.spec.js*:
 
-Update *Keypad.jsx*:
+```js
+...
+
+describe('Keypad', () => {
+  ...
+
+  it('renders the values of opeartors to the DOM', () => {
+    const wrapper = mount(<Keypad />);
+    expect(wrapper.text()).toEqual('');
+    wrapper.setProps({opeartors: ['+', '-', '*', '/']});
+    expect(wrapper.text()).toEqual('+-*/');
+  });
+});
+```
+
+Then update *Keypad.jsx*:
+
 ```jsx
 ...
 const Keypad = ({numbers, operators}) => {
@@ -515,9 +441,9 @@ describe('Keypad', () => {
 
 Tests are ok....
 
-### Add Key Compoment Test
+### Check for `Key` in `Keypad`
 
-add render test in *Keypad.spec.js*:
+Following the same shallow render test pattern we used with the `Display` and `Keypad` components, we will now check for the existence of the `Key` component in `Keypad`. Add the following test in *Keypad.spec.js*:
 
 ```js
 ...
@@ -528,14 +454,14 @@ describe('Keypad', () => {
   
   it('should render the Key component', () => {
     const wrapper = shallow(<Keypad />);
-    expect(wrapper.containsAllMatchingElements([
+    expect(wrapper.containsMatchingElement([
       <Key />
     ])).toEqual(true);
   });
 });
 ```
 
-Create test file:
+Create the test suite file for the `Key` component:
 
 `$ touch src/components/Key/Key.spec.js`
 
@@ -554,19 +480,25 @@ describe('Key', () => {
 });
 ```
 
-Add component in *Key.jsx*:
+Add the component in *Key.jsx*:
 
 ```jsx
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Key = () => <div className="key-container" />;
+const Key = ({keyType, keyValue}) => <div className="key-container" />;
+
+Key.propTypes = {
+  keyType: PropTypes.string.isRequired, 
+  keyValue: PropTypes.string.isRequired,
+}
 
 export default Key;
 ```
 
-*Key.spec.js* passes, *Keypad.jsx* fails
+*Key.spec.js* passes, *Keypad.jsx* fails (think that is supposed to be *Keypad.spec.js*)
 
-Import `Key` component in *Keypad.js* and call in component:
+Import `Key` component in *Keypad.js* and add to `return` statement:
 
 ```jsx
 ...
@@ -591,29 +523,154 @@ const Keypad = ({numbers, operators}) => {
 
 ALL PASS
 
-### More Key Tests
+### `Key` renders `keyValue` to the DOM
 
-Next, test that the `defaultProps` exists and are settable. In *Key.spec.js* add the following, don't forget to import `mount`:
-```jsx
-import React from 'react';
-import {shallow, mount} from 'enzyme';
-import Key from './Key';
+Next, add the `keyValue` prop render test in *Key.spec.jsx*:
 
+```js
+...
 describe('Key', () => {
   ...
-  it('has default props keyAction and KeyType', () => {
-    const wrapper = mount(<Key />);
-    expect(wrapper.prop('keyType')).toEqual('default');
-    expect(wrapper.prop('keyAction')).toEqual('default');
+
+  it('should render the value of keyValue to the DOM', () => {
+    const wrapper = shallow(<Key keyType="" keyValue="test" />);
+    expect(wrapper.text()).toEqual('test');
+  });
+});
+```
+
+Refactor *Key.jsx*:
+
+```jsx
+...
+const Key = ({keyType, keyValue}) => {
+  return (
+    <div className="key-container">
+      <p className="key-value">
+        {keyValue}
+      </p>
+    </div>
+  );
+}
+...
+```
+
+### Add Snapshot Testing for `Key`
+
+Now that the component UI is mostly complete, add `snapshot` testing. At the top of the tests in add `toMatchSnapshot` in *Key.spec.js*:
+
+```js
+...
+describe('Key', () => {
+  it('should render correctly', () => {
+    const wrapper = shallow(<Key keyType="" keyValue="" />);
+    expect(wrapper).toMatchSnapshot();
+  });
+...
+
+});
+```
+
+TODO: Immediate `snapshot` pass
+
+### Refactor `Keypad` to use `Key` for numbers, operators, submit
+
+Since we want to render a `Key` component for each index of the `numbers` and `operators` props as well as the `submit` Key, we need to add a new render test in *Keypad.spec.js*:
+
+```js
+import React from 'react';
+import {mount, shallow} from 'enzyme';
+import Keypad from './Keypad';
+import Key from '../Key/Key';
+
+describe('Keypad', () => {
+ 
+  ...
+  it('should render the Key component for each index of numbers, operators, and the submit Key', () => {
+    const numbers = ['0', '1'];
+    const operators = ['+', '-'];
+    const submit = 1;
+    const keyTotal = numbers.length + operators.length + submit;
+    const wrapper = shallow(<Keypad numbers={numbers} operators={operators} />);
+    expect(wrapper.find('Key').length).toEqual(keyTotal);
+  });
+});
+```
+
+Refactor the map functions and the `submit` Key in *Keypad.jsx*:
+
+```jsx
+...
+const Keypad = ({numbers, operators}) => {
+
+  numbers = numbers.map(number => {
+    return (
+      <Key 
+        key={number}
+        keyType="number-key"
+        keyValue={number}
+      />
+    );
   });
 
-  it('has settable props keyAction and KeyType', () => {
-    const wrapper = mount(<Key />);
-    wrapper.setProps({keyAction: 'test'});
-    expect(wrapper.prop('keyAction')).toEqual('test');
-    wrapper.setProps({keyType: 'test'});
-    expect(wrapper.prop('keyType')).toEqual('test');
+  operators = operators.map(operator => {
+    return (
+      <Key 
+        key={operator}
+        keyType="operator-key"
+        keyValue={operator}
+      />
+    );
   });
+
+  return (
+    <div className="keypad-container">
+      ...
+      <div className="submit-container">
+        <Key
+          keyType="submit-key"
+          keyValue="="
+        />
+      </div>
+    </div>
+  );
+}
+...
+```
+
+After the refactor, `should render the Key component for each index of numbers, operators, and the submit Key` passes, but all the other render tests break because of the addition of the `submit` Key. Refactor DOM render tests in *Keypad.spec.js* to include `=` in output:
+
+```js
+import React from 'react';
+import {mount, shallow} from 'enzyme';
+import Keypad from './Keypad';
+import Key from '../Key/Key';
+
+describe('Keypad', () => {
+  it('should render 4 <div>\'s', () => {
+    const wrapper = shallow(<Keypad numbers={[]} operators={[]} />);
+    expect(wrapper.find('div').length).toEqual(4);
+  });
+
+  it('renders the values of numbers to the DOM', () => {
+    const wrapper = mount(<Keypad numbers={[]} operators={[]} />);
+    wrapper.setProps({numbers: ['0', '1', '2']});
+    expect(wrapper.text()).toEqual('012=');
+  });
+
+  it('renders the values of operators to the DOM', () => {
+    const wrapper = mount(<Keypad numbers={[]} operators={[]} />);
+    wrapper.setProps({operators: ['+', '-', '*', '/']});
+    expect(wrapper.text()).toEqual('+-*/=');
+  });
+
+  it('should render the submit Key component', () => {
+    const wrapper = mount(<Keypad numbers={[]} operators={[]} />);
+    expect(wrapper.containsMatchingElement([
+      <Key keyType="submit-key" keyValue="=" />
+    ])).toEqual(true);
+  });
+  ...
 });
 ```
 

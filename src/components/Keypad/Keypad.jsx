@@ -6,13 +6,21 @@ const Keypad = ({numbers, operators}) => {
 
   numbers = numbers.map(number => {
     return (
-      <p key={number}>{number}</p>
+      <Key 
+        key={number}
+        keyType="number-key"
+        keyValue={number}
+      />
     );
   });
 
   operators = operators.map(operator => {
     return (
-      <p key={operator}>{operator}</p>
+      <Key 
+        key={operator}
+        keyType="operator-key"
+        keyValue={operator}
+      />
     );
   });
 
@@ -24,10 +32,12 @@ const Keypad = ({numbers, operators}) => {
       <div className="operators-container">
         {operators}
       </div>
-      <Key 
-        keyType="none"
-        keyValue="none"
-      />
+      <div className="submit-container">
+        <Key
+          keyType="submit-key"
+          keyValue="="
+        />
+      </div>
     </div>
   );
 }
@@ -35,11 +45,6 @@ const Keypad = ({numbers, operators}) => {
 Keypad.propTypes = {
   numbers: PropTypes.array.isRequired,
   operators: PropTypes.array.isRequired,
-}
-
-Keypad.defaultProps = {
-  numbers: [],
-  operators: [],
 }
 
 export default Keypad;

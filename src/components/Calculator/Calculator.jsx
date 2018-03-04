@@ -5,8 +5,11 @@ import Keypad from '../Keypad/Keypad'
 const Calculator = () => {
   return (
     <div className="calculator-container">
-      <Display />
-      <Keypad />
+      <Display displayValue="" />
+      <Keypad 
+        numbers={[]}
+        operators={[]}
+      />
     </div>
   );
 }

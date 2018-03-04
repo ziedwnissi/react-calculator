@@ -13,8 +13,11 @@ describe('Calculator', () => {
   it('should render the Display and Keypad Components', () => {
     const wrapper = shallow(<Calculator />);
     expect(wrapper.containsAllMatchingElements([
-      <Display />,
-      <Keypad />
+      <Display displayValue="" />,
+      <Keypad 
+        numbers={[]}
+        operators={[]}
+      />
     ])).toEqual(true);
   });
 });
