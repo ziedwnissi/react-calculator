@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -19,4 +17,3 @@ Key.propTypes = {
 }
 
 export default Key;
->>>>>>> initial-tests
