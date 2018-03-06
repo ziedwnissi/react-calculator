@@ -6,7 +6,7 @@
 
 `$ cd react-calculator`
 
-`$ cd yarn install`
+`$ yarn install`
 
 ## Run Locally
 
