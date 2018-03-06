@@ -4,6 +4,11 @@ import Keypad from './Keypad';
 import Key from '../Key/Key';
 
 describe('Keypad', () => {
+  it('should render correctly', () => {
+    const wrapper = shallow(<Keypad numbers={[]} operators={[]} />);
+    expect(wrapper).toMatchSnapshot();
+  });
+  
   it('should render 4 <div>\'s', () => {
     const wrapper = shallow(<Keypad numbers={[]} operators={[]} />);
     expect(wrapper.find('div').length).toEqual(4);
