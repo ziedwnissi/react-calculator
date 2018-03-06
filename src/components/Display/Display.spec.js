@@ -1,5 +1,5 @@
 import React from 'react';
-import {mount, shallow} from 'enzyme';
+import {shallow} from 'enzyme';
 import Display from './Display';
 
 describe('Display', () => {
@@ -14,8 +14,7 @@ describe('Display', () => {
   });
 
   it('renders the value of displayValue to the DOM', () => {
-    const wrapper = mount(<Display displayValue="test" />);
-    // wrapper.setProps({displayValue: 'new value'});
+    const wrapper = shallow(<Display displayValue="test" />);
     expect(wrapper.text()).toEqual('test');
   });
 });
