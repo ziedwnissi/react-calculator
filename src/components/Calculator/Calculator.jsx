@@ -1,18 +1,5 @@
 import React, {Component} from 'react';
 import Display from '../Display/Display';
-<<<<<<< HEAD
-
-const Calculator = () => {
-  return (
-    <div className="calculator-container">
-      <Display displayValue="" />
-      <Keypad 
-        numbers={[]}
-        operators={[]}
-      />
-    </div>
-  );
-=======
 import Keypad from '../Keypad/Keypad';
 
 class Calculator extends Component {
@@ -32,7 +19,8 @@ class Calculator extends Component {
     this.updateDisplay = this.updateDisplay.bind(this);
   }
 
-  callOperator = () => {
+  callOperator = (event) => {
+    event.preventDefault()
     let {displayValue, selectedOperator, storedValue} = this.state;
     const updateStoredValue = displayValue;
     
@@ -62,7 +50,8 @@ class Calculator extends Component {
     this.setState({displayValue, selectedOperator, storedValue: updateStoredValue});
   }
 
-  setOperator = (value) => {
+  setOperator = (event, value) => {
+    event.preventDefault()
     let {displayValue, selectedOperator, storedValue} = this.state;
 
     if (selectedOperator === '') {
@@ -76,38 +65,38 @@ class Calculator extends Component {
     this.setState({displayValue, selectedOperator, storedValue});
   }
 
-  updateDisplay = (value) => {
+  updateDisplay = (event, value) => {
+    event.preventDefault()
     let {displayValue} = this.state;
-    
-    // prevent multiple occurences of '.'
+  
     if (value === '.' && displayValue.includes('.')) value = '';
     
     if (value === 'ce') {
-      // deletes last char in displayValue
       displayValue = displayValue.substr(0, displayValue.length - 1);
-      // set displayValue to '0' if displayValue is empty string
       if (displayValue === '') displayValue = '0';
     } else {
-      // replace displayValue with value if displayValue equal to '0'
-      // else concatenate displayValue and value
       displayValue === '0' ? displayValue = value : displayValue += value;
     }
 
     this.setState({displayValue});
   }
-  
+
   render () {
+    const {displayValue, numbers, operators} = this.state;
+    
     return (
       <div className="calculator-container">
-        <Display displayValue="" />
-        <Keypad 
-          numbers={[]}
-          operators={[]}
+        <Display displayValue={displayValue} />
+        <Keypad
+          callOperator={this.callOperator}
+          numbers={numbers}
+          operators={operators}
+          setOperator={this.setOperator}
+          updateDisplay={this.updateDisplay}
         />
       </div>
     );
   }
->>>>>>> initial-tests
 }
 
 export default Calculator;

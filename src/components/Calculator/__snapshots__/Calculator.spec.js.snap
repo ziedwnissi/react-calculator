@@ -19,11 +19,36 @@ ShallowWrapper {
     "props": Object {
       "children": Array [
         <Display
-          displayValue=""
+          displayValue="0"
 />,
         <Keypad
-          numbers={Array []}
-          operators={Array []}
+          callOperator={[Function]}
+          numbers={
+                    Array [
+                              "9",
+                              "8",
+                              "7",
+                              "6",
+                              "5",
+                              "4",
+                              "3",
+                              "2",
+                              "1",
+                              ".",
+                              "0",
+                              "ce",
+                            ]
+          }
+          operators={
+                    Array [
+                              "/",
+                              "x",
+                              "-",
+                              "+",
+                            ]
+          }
+          setOperator={[Function]}
+          updateDisplay={[Function]}
 />,
       ],
       "className": "calculator-container",
@@ -35,7 +60,7 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "function",
         "props": Object {
-          "displayValue": "",
+          "displayValue": "0",
         },
         "ref": null,
         "rendered": null,
@@ -46,8 +71,29 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "function",
         "props": Object {
-          "numbers": Array [],
-          "operators": Array [],
+          "callOperator": [Function],
+          "numbers": Array [
+            "9",
+            "8",
+            "7",
+            "6",
+            "5",
+            "4",
+            "3",
+            "2",
+            "1",
+            ".",
+            "0",
+            "ce",
+          ],
+          "operators": Array [
+            "/",
+            "x",
+            "-",
+            "+",
+          ],
+          "setOperator": [Function],
+          "updateDisplay": [Function],
         },
         "ref": null,
         "rendered": null,
@@ -64,11 +110,36 @@ ShallowWrapper {
       "props": Object {
         "children": Array [
           <Display
-            displayValue=""
+            displayValue="0"
 />,
           <Keypad
-            numbers={Array []}
-            operators={Array []}
+            callOperator={[Function]}
+            numbers={
+                        Array [
+                                    "9",
+                                    "8",
+                                    "7",
+                                    "6",
+                                    "5",
+                                    "4",
+                                    "3",
+                                    "2",
+                                    "1",
+                                    ".",
+                                    "0",
+                                    "ce",
+                                  ]
+            }
+            operators={
+                        Array [
+                                    "/",
+                                    "x",
+                                    "-",
+                                    "+",
+                                  ]
+            }
+            setOperator={[Function]}
+            updateDisplay={[Function]}
 />,
         ],
         "className": "calculator-container",
@@ -80,7 +151,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "function",
           "props": Object {
-            "displayValue": "",
+            "displayValue": "0",
           },
           "ref": null,
           "rendered": null,
@@ -91,8 +162,29 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "function",
           "props": Object {
-            "numbers": Array [],
-            "operators": Array [],
+            "callOperator": [Function],
+            "numbers": Array [
+              "9",
+              "8",
+              "7",
+              "6",
+              "5",
+              "4",
+              "3",
+              "2",
+              "1",
+              ".",
+              "0",
+              "ce",
+            ],
+            "operators": Array [
+              "/",
+              "x",
+              "-",
+              "+",
+            ],
+            "setOperator": [Function],
+            "updateDisplay": [Function],
           },
           "ref": null,
           "rendered": null,

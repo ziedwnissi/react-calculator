@@ -35,6 +35,7 @@ ShallowWrapper {
           className="submit-container"
 >
           <Key
+                    keyAction={undefined}
                     keyType="submit-key"
                     keyValue="="
           />
@@ -74,6 +75,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": <Key
+            keyAction={undefined}
             keyType="submit-key"
             keyValue="="
 />,
@@ -85,6 +87,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "function",
           "props": Object {
+            "keyAction": undefined,
             "keyType": "submit-key",
             "keyValue": "=",
           },
@@ -118,6 +121,7 @@ ShallowWrapper {
             className="submit-container"
 >
             <Key
+                        keyAction={undefined}
                         keyType="submit-key"
                         keyValue="="
             />
@@ -157,6 +161,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": <Key
+              keyAction={undefined}
               keyType="submit-key"
               keyValue="="
 />,
@@ -168,6 +173,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "function",
             "props": Object {
+              "keyAction": undefined,
               "keyType": "submit-key",
               "keyValue": "=",
             },

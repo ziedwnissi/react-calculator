@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Key from '../Key/Key';
 
-const Keypad = ({numbers, operators}) => {
-
+const Keypad = ({operators, callOperator, numbers, setOperator, updateDisplay}) => {
+  
   numbers = numbers.map(number => {
     return (
       <Key 
         key={number}
+        keyAction={updateDisplay}
         keyType="number-key"
         keyValue={number}
       />
@@ -18,6 +19,7 @@ const Keypad = ({numbers, operators}) => {
     return (
       <Key 
         key={operator}
+        keyAction={setOperator}
         keyType="operator-key"
         keyValue={operator}
       />
@@ -34,6 +36,7 @@ const Keypad = ({numbers, operators}) => {
       </div>
       <div className="submit-container">
         <Key
+          keyAction={callOperator}
           keyType="submit-key"
           keyValue="="
         />
@@ -43,8 +46,11 @@ const Keypad = ({numbers, operators}) => {
 }
 
 Keypad.propTypes = {
+  callOperator: PropTypes.func,
   numbers: PropTypes.array.isRequired,
   operators: PropTypes.array.isRequired,
+  setOperator: PropTypes.func,
+  updateDisplay: PropTypes.func,
 }
 
 export default Keypad;

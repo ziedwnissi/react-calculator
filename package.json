@@ -1,5 +1,5 @@
 {
-  "name": "aws-lambda-with-api-gateway-and-react",
+  "name": "tdd-react-calculator",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

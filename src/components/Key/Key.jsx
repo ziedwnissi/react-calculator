@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Key = ({keyType, keyValue}) => {
+const Key = ({keyAction, keyType, keyValue}) => {
   return (
-    <div className="key-container">
+    <div 
+      className="key-container"
+      onClick={event => {keyAction(event, keyValue)}}
+    >
       <p className="key-value">
         {keyValue}
       </p>
@@ -12,6 +15,7 @@ const Key = ({keyType, keyValue}) => {
 }
 
 Key.propTypes = {
+  keyAction: PropTypes.func,
   keyType: PropTypes.string.isRequired, 
   keyValue: PropTypes.string.isRequired,
 }
