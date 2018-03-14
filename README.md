@@ -1,5 +1,9 @@
 # TDD React
 
+## Want to Learn How to Build This?
+
+![Part One](https://testdriven.io/tdd-with-react-jest-and-enzyme-part-one)
+
 ## Local Setup
 
 ```sh
@@ -10,13 +14,9 @@ $ git clone git@github.com:testdrivenio/react-calculator.git
 $ cd react-calculator
 ```
 
-<<<<<<< HEAD
 ```sh
 $ yarn install
 ```
-=======
-`$ yarn install`
->>>>>>> 68aaa858885ea52ae9d5604d05ee7c36a03a1b1c
 
 ## Run Locally
 
@@ -26,10 +26,6 @@ $ yarn start
 
 ## Run Tests
 
-<<<<<<< HEAD
 ```sh
 $ yarn test
 ```
-=======
-`$ yarn test`
->>>>>>> 68aaa858885ea52ae9d5604d05ee7c36a03a1b1c

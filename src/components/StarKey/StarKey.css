@@ -1,0 +1,57 @@
+.star-key-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  transition: var(--default-transition);
+  width: 25%;
+}
+
+.star-key-container:hover {
+  cursor: pointer;
+}
+
+.star-key-theme-default {
+  background-color: var(--star-key-color-default);
+}
+
+.star-key-theme-default:hover {
+  background-color: var(--star-key-color-default-hover);
+}
+
+.star-key-theme-pony {
+  background-color: var(--star-key-color-pony);
+  border-radius: 8px;
+}
+
+.star-key-theme-pony:hover {
+  background-color: var(--star-key-color-pony-hover);
+}
+
+.star-key-theme-dondi {
+  background-color: var(--star-key-color-dondi);
+  border-radius: 8px;
+  box-shadow: var(--key-border);
+}
+
+.star-key-theme-dondi:hover {
+  background-color: var(--star-key-color-dondi-hover);
+  /* box-shadow: var(--key-border-hover); */
+}
+
+.star-icon {
+  height: var(--star-icon-size);
+  transition: var(--default-transition);
+  width: var(--star-icon-size);
+}
+
+.star-theme-default {
+  fill: var(--star-icon-color-default);
+}
+
+.star-theme-pony {
+  fill: var(--star-icon-color-pony);
+}
+
+.star-theme-dondi {
+  fill: var(--star-icon-color-dondi);
+}

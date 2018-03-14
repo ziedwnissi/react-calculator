@@ -20,6 +20,7 @@ ShallowWrapper {
       "children": Array [
         <Display
           displayValue="0"
+          theme="default"
 />,
         <Keypad
           callOperator={[Function]}
@@ -49,10 +50,12 @@ ShallowWrapper {
                             ]
           }
           setOperator={[Function]}
+          theme="default"
+          toggleTheme={[Function]}
           updateDisplay={[Function]}
 />,
       ],
-      "className": "calculator-container",
+      "className": "calculator-container calculator-theme-default",
     },
     "ref": null,
     "rendered": Array [
@@ -62,6 +65,7 @@ ShallowWrapper {
         "nodeType": "function",
         "props": Object {
           "displayValue": "0",
+          "theme": "default",
         },
         "ref": null,
         "rendered": null,
@@ -95,6 +99,8 @@ ShallowWrapper {
             "+",
           ],
           "setOperator": [Function],
+          "theme": "default",
+          "toggleTheme": [Function],
           "updateDisplay": [Function],
         },
         "ref": null,
@@ -113,6 +119,7 @@ ShallowWrapper {
         "children": Array [
           <Display
             displayValue="0"
+            theme="default"
 />,
           <Keypad
             callOperator={[Function]}
@@ -142,10 +149,12 @@ ShallowWrapper {
                                   ]
             }
             setOperator={[Function]}
+            theme="default"
+            toggleTheme={[Function]}
             updateDisplay={[Function]}
 />,
         ],
-        "className": "calculator-container",
+        "className": "calculator-container calculator-theme-default",
       },
       "ref": null,
       "rendered": Array [
@@ -155,6 +164,7 @@ ShallowWrapper {
           "nodeType": "function",
           "props": Object {
             "displayValue": "0",
+            "theme": "default",
           },
           "ref": null,
           "rendered": null,
@@ -188,6 +198,8 @@ ShallowWrapper {
               "+",
             ],
             "setOperator": [Function],
+            "theme": "default",
+            "toggleTheme": [Function],
             "updateDisplay": [Function],
           },
           "ref": null,

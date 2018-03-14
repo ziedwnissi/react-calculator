@@ -1,25 +1,71 @@
-/* 
+/*
 app variables
 */
 
 :root {
-  /* colors */
-  --action-key: #545454;
-  --action-key-hover: #2a2a2a;
-  --display-background: #1d1f1f;
-  --display-text-color: #23e000;
-  --key-text-color: #d3d3d3;
-  --keypad-background: #696969;
-  --number-key: #696969;
-  --number-key-hover: #3f3f3f;
-  --submit-key-color: #d18800;
-  --submit-key-hover: #aa6e00;
+  /* background colors */
+  /* calculator */
+  --calculator-background-color-default: #696969;
+  --calculator-background-color-pony: #93d3e8;
+  
+  /* display */
+  --display-background-color-default: #1d1f1f;
+  --display-background-color-pony: #3d3d3d;
+  --display-background-color-dondi: rgba(0,0,0,0.6);
+
+  /* key colors by theme */
+  /* default */
+  --number-key-color-default: #696969;
+  --number-key-color-default-hover: #3f3f3f;
+  --operator-key-color-default: #545454;
+  --operator-key-color-default-hover: #2a2a2a;
+  --star-key-color-default: #545454;
+  --star-key-color-default-hover: #2a2a2a;
+  --submit-key-color-default: #d18800;
+  --submit-key-color-default-hover: #aa6e00;
+
+  /* pony */
+  --number-key-color-pony: #93d3e8;
+  --number-key-color-pony-hover: #2aa1c7;
+  --operator-key-color-pony: #6890a0;
+  --operator-key-color-pony-hover: #527583;
+  --star-key-color-pony: #6890a0;
+  --star-key-color-pony-hover: #527583;
+  --submit-key-color-pony: #843f7b;
+  --submit-key-color-pony-hover: #693262;
+
+  /* dondi */
+  --operator-key-color-dondi: transparent;
+  --operator-key-color-dondi-hover: rgba(0,0,0,0.6);
+  --number-key-color-dondi: transparent;
+  --number-key-color-dondi-hover: rgba(0,0,0,0.6);
+  --star-key-color-dondi: transparent;
+  --star-key-color-dondi-hover: rgba(0,0,0,0.6);
+  --submit-key-color-dondi: transparent;
+  --submit-key-color-dondi-hover: rgba(0,0,0,0.6);
 
   /* font */
   --main-font: 'Orbitron', sans-serif;
 
-  /* font sizes */
+  /* font colors */
+  /* display */
+  --display-text-color-default: #23e000;
+  --display-text-color-pony: #f9ff70;
+  --display-text-color-dondi: #23e000;
+  
+  /* key text */
+  --key-text-color-default: #d3d3d3;
+  --key-text-color-pony: #0564ce;
+  --key-text-color-dondi: #c8bcac;
+
+  /* star icon colors */
+  --star-icon-color-default: #d3d3d3;
+  --star-icon-color-pony: #0564ce;
+  --star-icon-color-dondi: #c8bcac;
+
+  /* font and icon sizes */
   --display-text-size: 4em;
+  --star-icon-size: 2em;
   --key-text-size: 3em;
 
   /* font weights */
@@ -29,17 +75,29 @@ app variables
   /* calculator dimensions */
   --calculator-height: 72%;
   --calculator-width: 36%;
-}
 
-/* 
-media query for tablet or smaller screen 
-*/
+  /* display dimensions */
+  --display-height: 24%;
+  --display-width: 92%;
+
+  /* keypad dimensions */
+  --keypad-height: 72%;
+  --keypad-width: 96%;
+
+  /* key borders */
+  --key-border: inset 0px 0px 0px 4px #696969;
+  --key-border-hover: none;
+  
+  /* transitions */
+  --default-transition: all linear 0.3s;
+}
 
 @media screen and (max-width: 1024px) {
   :root {
     /* font sizes */
-    --display-text-size: 10em;
-    --key-text-size: 6em;
+    --display-text-size: 6em;
+    --star-icon-size: 3em;
+    --key-text-size: 3em;
 
     /* calculator dimensions */
     --calculator-height: 100%;
@@ -47,8 +105,8 @@ media query for tablet or smaller screen
   }
 }
 
-/* 
-app css reset  
+/*
+app CSS reset  
 */
 
 body, div, p {

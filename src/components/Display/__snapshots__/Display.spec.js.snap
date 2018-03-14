@@ -6,6 +6,8 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Display
     displayValue=""
+    theme="default"
+    toggleTheme={[Function]}
 />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -20,9 +22,9 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": <p
-        className="display-value"
+        className="display-value display-default"
 />,
-      "className": "display-container",
+      "className": "display-container display-theme-default",
     },
     "ref": null,
     "rendered": Object {
@@ -31,7 +33,7 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": "",
-        "className": "display-value",
+        "className": "display-value display-default",
       },
       "ref": null,
       "rendered": "",
@@ -46,9 +48,9 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": <p
-          className="display-value"
+          className="display-value display-default"
 />,
-        "className": "display-container",
+        "className": "display-container display-theme-default",
       },
       "ref": null,
       "rendered": Object {
@@ -57,7 +59,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": "",
-          "className": "display-value",
+          "className": "display-value display-default",
         },
         "ref": null,
         "rendered": "",

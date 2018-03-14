@@ -9,7 +9,7 @@ describe('Calculator', () => {
   beforeEach(() => {
     wrapper = shallow(<Calculator />);
   });
-  
+
   it('should render correctly', () => {
     expect(wrapper).toMatchSnapshot();
   });
@@ -18,14 +18,29 @@ describe('Calculator', () => {
     expect(wrapper.find('div').length).toEqual(1);
   });
 
+  it('should have a themed className reflecting its theme', () => {
+    expect(wrapper.find('.calculator-theme-default').exists()).toBe(true);
+  });
+
+  it('should update its themed className on theme change', () => {
+    expect(wrapper.find('.calculator-theme-default').exists()).toBe(true);
+    wrapper.setState({theme: 'pony'});
+    expect(wrapper.find('.calculator-theme-pony').exists()).toBe(true);
+  });
+
   it('should render the Display and Keypad Components', () => {
     expect(wrapper.containsAllMatchingElements([
-      <Display displayValue={'0'} />,
+      <Display 
+        displayValue={wrapper.instance().state.displayValue} 
+        theme={wrapper.instance().state.theme}
+      />,
       <Keypad 
         callOperator={wrapper.instance().callOperator}
-        numbers={['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0', 'ce']}
-        operators={['/', 'x', '-', '+']}
+        numbers={wrapper.instance().state.numbers}
+        operators={wrapper.instance().state.operators}
         setOperator={wrapper.instance().setOperator}
+        theme={wrapper.instance().state.theme}
+        toggleTheme={wrapper.instance().toggleTheme}
         updateDisplay={wrapper.instance().updateDisplay}
       />
     ])).toEqual(true);
@@ -33,102 +48,99 @@ describe('Calculator', () => {
 });
 
 describe('updateDisplay', () => {
-  let wrapper, event;
+  let wrapper;
   beforeEach(() => {
     wrapper = shallow(<Calculator />);
-    event = {preventDefault: jest.fn()}
   });
 
   it('updates displayValue', () => {
-    wrapper.instance().updateDisplay(event,'5');
+    wrapper.instance().updateDisplay('5');
     expect(wrapper.state('displayValue')).toEqual('5');
   });
-    
+
   it('concatenates displayValue', () => {
-    wrapper.instance().updateDisplay(event,'5');
-    wrapper.instance().updateDisplay(event,'0');
+    wrapper.instance().updateDisplay('5');
+    wrapper.instance().updateDisplay('0');
     expect(wrapper.state('displayValue')).toEqual('50');
   });
 
   it('removes leading "0" from displayValue', () => {
-    wrapper.instance().updateDisplay(event,'0');
+    wrapper.instance().updateDisplay('0');
     expect(wrapper.state('displayValue')).toEqual('0');
-    wrapper.instance().updateDisplay(event,'5');
+    wrapper.instance().updateDisplay('5');
     expect(wrapper.state('displayValue')).toEqual('5');
   });
 
   it('prevents multiple leading "0"s from displayValue', () => {
-    wrapper.instance().updateDisplay(event,'0');
-    wrapper.instance().updateDisplay(event,'0');
+    wrapper.instance().updateDisplay('0');
+    wrapper.instance().updateDisplay('0');
     expect(wrapper.state('displayValue')).toEqual('0');
   });
 
   it('removes last char of displayValue', () => {
-    wrapper.instance().updateDisplay(event,'5');
-    wrapper.instance().updateDisplay(event,'0');
-    wrapper.instance().updateDisplay(event,'ce');
+    wrapper.instance().updateDisplay('5');
+    wrapper.instance().updateDisplay('0');
+    wrapper.instance().updateDisplay('ce');
     expect(wrapper.state('displayValue')).toEqual('5');
   });
 
   it('prevents multiple instances of "." in displayValue', () => {
-    wrapper.instance().updateDisplay(event,'.');
-    wrapper.instance().updateDisplay(event,'.');
+    wrapper.instance().updateDisplay('.');
+    wrapper.instance().updateDisplay('.');
     expect(wrapper.state('displayValue')).toEqual('.');
   });
 
   it('will set displayValue to "0" if displayValue is equal to an empty string', () => {
-    wrapper.instance().updateDisplay(event,'ce');
+    wrapper.instance().updateDisplay('ce');
     expect(wrapper.state('displayValue')).toEqual('0');
   });
 });
 
 describe('setOperator', () => {
-  let wrapper, event;
+  let wrapper;
   beforeEach(() => {
     wrapper = shallow(<Calculator />);
-    event = {preventDefault: jest.fn()}
   });
 
   it('updates the value of selectedOperator', () => {
-    wrapper.instance().setOperator(event, '+');
+    wrapper.instance().setOperator('+');
     expect(wrapper.state('selectedOperator')).toEqual('+');
-    wrapper.instance().setOperator(event, '/');
+    wrapper.instance().setOperator('/');
     expect(wrapper.state('selectedOperator')).toEqual('/');
   });
 
   it('updates the value of storedValue to the value of displayValue', () => {
     wrapper.setState({displayValue: '5'});
-    wrapper.instance().setOperator(event, '+');
+    wrapper.instance().setOperator('+');
     expect(wrapper.state('storedValue')).toEqual('5');
   });
 
   it('updates the value of displayValue to "0"', () => {
     wrapper.setState({displayValue: '5'});
-    wrapper.instance().setOperator(event, '+');
+    wrapper.instance().setOperator('+');
     expect(wrapper.state('displayValue')).toEqual('0');
   });
 
   it('selectedOperator is not an empty string, does not update storedValue', () => {
     wrapper.setState({displayValue: '5'});
-    wrapper.instance().setOperator(event, '+');
+    wrapper.instance().setOperator('+');
     expect(wrapper.state('storedValue')).toEqual('5');
-    wrapper.instance().setOperator(event, '-');
+    wrapper.instance().setOperator('-');
     expect(wrapper.state('storedValue')).toEqual('5');
   });
 });
 
 describe('callOperator', () => {
-  let wrapper, event;
+  let wrapper;
   beforeEach(() => {
     wrapper = shallow(<Calculator />);
-    event = {preventDefault: jest.fn()}
   });
 
   it('updates displayValue to the sum of storedValue and displayValue', () => {
     wrapper.setState({storedValue: '3'});
     wrapper.setState({displayValue: '2'});
     wrapper.setState({selectedOperator: '+'});
-    wrapper.instance().callOperator(event);
+    wrapper.instance().callOperator();
     expect(wrapper.state('displayValue')).toEqual('5');
   });
 
@@ -136,7 +148,7 @@ describe('callOperator', () => {
     wrapper.setState({storedValue: '3'});
     wrapper.setState({displayValue: '2'});
     wrapper.setState({selectedOperator: '-'});
-    wrapper.instance().callOperator(event);
+    wrapper.instance().callOperator();
     expect(wrapper.state('displayValue')).toEqual('1');
   });
 
@@ -144,7 +156,7 @@ describe('callOperator', () => {
     wrapper.setState({storedValue: '3'});
     wrapper.setState({displayValue: '2'});
     wrapper.setState({selectedOperator: 'x'});
-    wrapper.instance().callOperator(event);
+    wrapper.instance().callOperator();
     expect(wrapper.state('displayValue')).toEqual('6');
   });
 
@@ -152,7 +164,7 @@ describe('callOperator', () => {
     wrapper.setState({storedValue: '3'});
     wrapper.setState({displayValue: '2'});
     wrapper.setState({selectedOperator: '/'});
-    wrapper.instance().callOperator(event);
+    wrapper.instance().callOperator();
     expect(wrapper.state('displayValue')).toEqual('1.5');
   });
 
@@ -160,7 +172,7 @@ describe('callOperator', () => {
     wrapper.setState({storedValue: '3'});
     wrapper.setState({displayValue: 'string'});
     wrapper.setState({selectedOperator: '/'});
-    wrapper.instance().callOperator(event);
+    wrapper.instance().callOperator();
     expect(wrapper.state('displayValue')).toEqual('0');
   });
 
@@ -168,7 +180,7 @@ describe('callOperator', () => {
     wrapper.setState({storedValue: '7'});
     wrapper.setState({displayValue: '0'});
     wrapper.setState({selectedOperator: '/'});
-    wrapper.instance().callOperator(event);
+    wrapper.instance().callOperator();
     expect(wrapper.state('displayValue')).toEqual('0');
   });
 
@@ -176,7 +188,7 @@ describe('callOperator', () => {
     wrapper.setState({storedValue: '7'});
     wrapper.setState({displayValue: '10'});
     wrapper.setState({selectedOperator: 'string'});
-    wrapper.instance().callOperator(event);
+    wrapper.instance().callOperator();
     expect(wrapper.state('displayValue')).toEqual('0');
   });
 
@@ -184,7 +196,71 @@ describe('callOperator', () => {
     wrapper.setState({storedValue: ''});
     wrapper.setState({displayValue: '10'});
     wrapper.setState({selectedOperator: ''});
-    wrapper.instance().callOperator(event);
+    wrapper.instance().callOperator();
     expect(wrapper.state('displayValue')).toEqual('0');
+  });
+});
+
+describe('toggleTheme', () => {
+  let wrapper;
+  beforeEach(() => {
+    wrapper = shallow(<Calculator />);
+  });
+
+  it('should set theme to pony when called once', () => {
+    wrapper.instance().toggleTheme();
+    expect(wrapper.state('theme')).toEqual('pony');
+  });
+  
+  it('should set theme to dondi when called twice', () => {
+    wrapper.instance().toggleTheme();
+    wrapper.instance().toggleTheme();
+    expect(wrapper.state('theme')).toEqual('dondi');
+  });
+
+  it('should set theme back to default when called thrice', () => {
+    wrapper.instance().toggleTheme();
+    wrapper.instance().toggleTheme();
+    wrapper.instance().toggleTheme();
+    expect(wrapper.state('theme')).toEqual('default');
+  });
+});
+
+describe('mounted Calculator', () => {
+  let wrapper;
+  beforeEach(() => {
+    wrapper = mount(<Calculator />);
+  });
+
+  it('calls updateDisplay when a number key is clicked', () => {
+    const spy = jest.spyOn(wrapper.instance(), 'updateDisplay');
+    wrapper.instance().forceUpdate();
+    expect(spy).toHaveBeenCalledTimes(0);
+    wrapper.find('.number-key').first().simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls setOperator when an operator key is clicked', () => {
+    const spy = jest.spyOn(wrapper.instance(), 'setOperator');
+    wrapper.instance().forceUpdate();
+    expect(spy).toHaveBeenCalledTimes(0);
+    wrapper.find('.operator-key').first().simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls callOperator when the submit key is clicked', () => {
+    const spy = jest.spyOn(wrapper.instance(), 'callOperator');
+    wrapper.instance().forceUpdate();
+    expect(spy).toHaveBeenCalledTimes(0);
+    wrapper.find('.submit-key').simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls toggleTheme when the StarKey is clicked', () => {
+    const spy = jest.spyOn(wrapper.instance(), 'toggleTheme');
+    wrapper.instance().forceUpdate();
+    expect(spy).toHaveBeenCalledTimes(0);
+    wrapper.find('.star-key-container').first().simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,4 +1,19 @@
 .calculator-container {
   height: var(--calculator-height);
   width: var(--calculator-width);
+  transition: var(--default-transition);
+}
+
+.calculator-theme-default {
+  background-color: var(--calculator-background-color-default);
+}
+
+.calculator-theme-pony {
+  background-color: var(--calculator-background-color-pony);
+  border-radius: 8px;
+}
+
+.calculator-theme-dondi {
+  background: url('../../assets/dondi.jpg');
+  border-radius: 8px;
 }

@@ -1,16 +1,42 @@
 .display-container {
   align-items: center;
-  background: var(--display-background);
   display: flex;
-  padding: 4% 4% 2% 4%;
-  width: 92%;
+  height: var(--display-height);
+  padding: 0 4%;
+  transition: var(--default-transition);
+  width: var(--display-width);
+}
+
+.display-theme-default {
+  background-color: var(--display-background-color-default);
+}
+
+.display-theme-pony {
+  background-color: var(--display-background-color-pony);
+  border-radius: 8px 8px 0 0;
+}
+
+.display-theme-dondi {
+  background-color: var(--display-background-color-dondi);
+  border-radius: 8px 8px 0 0;
 }
 
 .display-value {
-  color: var(--display-text-color);
   font-size: var(--display-text-size);
   font-family: var(--main-font);
   font-weight: var(--display-text-weight);
   margin-left: auto;
   overflow: hidden;
+}
+
+.display-default {
+  color: var(--display-text-color-default);
+}
+
+.display-pony {
+  color: var(--display-text-color-pony);
+}
+
+.display-dondi {
+  color: var(--display-text-color-dondi);
 }

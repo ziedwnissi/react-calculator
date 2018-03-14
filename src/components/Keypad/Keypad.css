@@ -1,11 +1,10 @@
 .keypad-container {
-  background: var(--keypad-background);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  height: 76%;
+  height: var(--keypad-height);
   padding: 2%;
-  width: 96%;
+  width: var(--keypad-width);
 }
 
 .numbers-container {
@@ -24,6 +23,7 @@
 }
 
 .submit-container {
+  display: flex;
   height: 20%;
   width: 100%;
 }

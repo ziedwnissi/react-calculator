@@ -11,36 +11,120 @@
 }
 
 .operator-key {
-  background-color: var(--action-key);
   width: 100%;
 }
 
-.operator-key:hover {
-  background-color: var(--action-key-hover); 
+.operator-key-theme-default {
+  background-color: var(--operator-key-color-default);
+}
+
+.operator-key-theme-default:hover {
+  background-color: var(--operator-key-color-default-hover); 
+}
+
+.operator-key-theme-pony {
+  background-color: var(--operator-key-color-pony);
+}
+
+.operator-key-theme-pony:hover {
+  background-color: var(--operator-key-color-pony-hover); 
+}
+
+.operator-key-theme-dondi {
+  background-color: var(--operator-key-color-dondi);
+  box-shadow: var(--key-border);
+}
+
+.operator-key-theme-dondi:hover {
+  background-color: var(--operator-key-color-dondi-hover); 
 }
 
 .number-key {
-  background-color: var(--number-key);
   width: calc(100%/3);
 }
 
-.number-key:hover {
-  background-color: var(--number-key-hover);
+.number-key-theme-default {
+  background-color: var(--number-key-color-default);
+}
+
+.number-key-theme-default:hover {
+  background-color: var(--number-key-color-default-hover);
+}
+
+.number-key-theme-pony {
+  background-color: var(--number-key-color-pony);
+  border-radius: 8px;
+}
+
+.number-key-theme-pony:hover {
+  background-color: var(--number-key-color-pony-hover);
+}
+
+.number-key-theme-dondi {
+  background-color: var(--number-key-color-dondi);
+  border-radius: 8px;
+  box-shadow: var(--key-border);
+}
+
+.number-key-theme-dondi:hover {
+  background-color: var(--number-key-color-dondi-hover);
 }
 
 .submit-key {
-  background-color: var(--submit-key-color);
   height: 100%;
-  width: 100%;
+  width: 75%;
 }
 
-.submit-key:hover {
-  background-color: var(--submit-key-hover);
+.submit-key-theme-default {
+  background-color: var(--submit-key-color-default);
 }
+
+.submit-key-theme-default:hover {
+  background-color: var(--submit-key-color-default-hover);
+}
+
+.submit-key-theme-pony {
+  border-radius: 8px;
+  background-color: var(--submit-key-color-pony);
+}
+
+.submit-key-theme-pony:hover {
+  background-color: var(--submit-key-color-pony-hover);
+}
+
+.submit-key-theme-dondi {
+  background-color: var(--submit-key-color-dondi);
+  border-radius: 8px;
+  box-shadow: var(--key-border);
+}
+
+.submit-key-theme-dondi:hover {
+  background-color: var(--submit-key-color-dondi-hover);
+}
+
+.first-operator {
+  border-radius: 8px 8px 0 0;
+}
+
+.last-operator {
+  border-radius: 0 0 8px 8px;
+} 
 
 .key-value {
   color: var(--key-text-color);
   font-family: var(--main-font);
   font-size: var(--key-text-size);
   font-weight: var(--key-text-weight);
+}
+
+.key-theme-default {
+  color: var(--key-text-color-default);
+}
+
+.key-theme-pony {
+  color: var(--key-text-color-pony);
+}
+
+.key-theme-dondi {
+  color: var(--key-text-color-dondi);
 }

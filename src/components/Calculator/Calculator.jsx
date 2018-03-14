@@ -13,11 +13,13 @@ class Calculator extends Component {
       operators: ['/', 'x', '-', '+'],
       selectedOperator: '',
       storedValue: '',
+      theme: 'default',
     }
 
     this.callOperator = this.callOperator.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.setOperator = this.setOperator.bind(this);
+    this.toggleTheme = this.toggleTheme.bind(this);
     this.updateDisplay = this.updateDisplay.bind(this);
   }
   
@@ -29,14 +31,16 @@ class Calculator extends Component {
     document.removeEventListener('keydown', this.handleKeyPress);
   } 
 
-  callOperator = (event) => {
-    event.preventDefault()
+  callOperator() {
     let {displayValue, selectedOperator, storedValue} = this.state;
     const updateStoredValue = displayValue;
-    
+
     displayValue = parseInt(displayValue, 10);
     storedValue = parseInt(storedValue, 10);
-
+    // fix, needs test
+    // displayValue = parseFloat(displayValue);
+    // storedValue = parseFloat(storedValue);
+    
     switch(selectedOperator) {
       case '+':
         displayValue = storedValue + displayValue;
@@ -57,32 +61,32 @@ class Calculator extends Component {
     displayValue = displayValue.toString();
     selectedOperator = '';
     if (displayValue === 'NaN' || displayValue === 'Infinity') displayValue ='0';
+
     this.setState({displayValue, selectedOperator, storedValue: updateStoredValue});
   }
 
-  handleKeyPress = (event) => {
+  handleKeyPress(event) {
     const {numbers, operators} = this.state;
     
-    if (event.key === 'Backspace') this.updateDisplay(event, 'ce');
-    if (event.key === 'Enter' || event.key === '=') this.callOperator(event);
+    if (event.key === 'Backspace') this.updateDisplay('ce');
+    if (event.key === 'Enter' || event.key === '=') this.callOperator();
 
     numbers.forEach((number) => {
-      if (event.key === number){
-        this.updateDisplay(event, number);
+      if (event.key === number) {
+        this.updateDisplay(number);
       }
     });
     
     operators.forEach((operator) => {
-      if (event.key === operator){
-        this.setOperator(event, operator);
+      if (event.key === operator) {
+        this.setOperator(operator);
       }
     });
   }
 
-  setOperator = (event, value) => {
-    event.preventDefault()
+  setOperator(value) {
     let {displayValue, selectedOperator, storedValue} = this.state;
-
+    
     if (selectedOperator === '') {
       storedValue = displayValue;
       displayValue = '0';
@@ -94,23 +98,35 @@ class Calculator extends Component {
     this.setState({displayValue, selectedOperator, storedValue});
   }
 
-  updateDisplay = (event, value) => {
-    event.preventDefault()
+  toggleTheme() {
+    let {theme} = this.state;
+    
+    switch (theme) {
+      case 'default':
+        theme = 'pony';
+        break;
+
+      case 'pony':
+        theme = 'dondi'
+        break;
+
+      default:
+        theme = 'default';
+        break;
+    }
+    
+    this.setState({theme});
+  }
+
+  updateDisplay(value) {
     let {displayValue} = this.state;
-  
-    if (value === '.' && displayValue.includes('.')) value = '';
     
-    // prevent multiple occurences of '.'
     if (value === '.' && displayValue.includes('.')) value = '';
-    
+
     if (value === 'ce') {
-      // deletes last char in displayValue
       displayValue = displayValue.substr(0, displayValue.length - 1);
-      // set displayValue to '0' if displayValue is empty string
       if (displayValue === '') displayValue = '0';
     } else {
-      // replace displayValue with value if displayValue equal to '0'
-      // else concatenate displayValue and value
       displayValue === '0' ? displayValue = value : displayValue += value;
     }
 
@@ -118,17 +134,22 @@ class Calculator extends Component {
   }
 
   render () {
-    const {displayValue, numbers, operators} = this.state;
+    const {theme, displayValue, numbers, operators} = this.state;
     
     return (
-      <div className="calculator-container">
-        <Display displayValue={displayValue} />
+      <div className={`calculator-container calculator-theme-${theme}`}>
+        <Display 
+          theme={theme}
+          displayValue={displayValue} 
+        />
         <Keypad
           callOperator={this.callOperator}
+          theme={theme}
           handleKeyPress={this.handleKeyPress} 
           numbers={numbers}
           operators={operators}
           setOperator={this.setOperator}
+          toggleTheme={this.toggleTheme}
           updateDisplay={this.updateDisplay}
         />
       </div>
