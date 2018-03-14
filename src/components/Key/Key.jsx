@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './Key.css';
 
 const Key = ({keyAction, keyType, keyValue}) => {
+  const keyClass = `key-container ${keyType}`;
+  
   return (
     <div 
-      className="key-container"
+      className={keyClass}
       onClick={event => {keyAction(event, keyValue)}}
     >
       <p className="key-value">

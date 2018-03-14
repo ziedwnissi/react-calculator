@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Key from '../Key/Key';
+import './Keypad.css';
 
 const Keypad = ({operators, callOperator, numbers, setOperator, updateDisplay}) => {
   
