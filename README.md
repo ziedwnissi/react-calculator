@@ -2,16 +2,26 @@
 
 ## Local Setup
 
-`$ git clone git@github.com:testdrivenio/react-calculator.git`
+```sh
+$ git clone git@github.com:testdrivenio/react-calculator.git`
+```
 
-`$ cd react-calculator`
+```sh
+$ cd react-calculator`
+```
 
-`$ cd yarn install`
+```sh
+$ yarn install`
+```
 
 ## Run Locally
 
-`$ yarn start`
+```sh
+$ yarn start`
+```
 
 ## Run Tests
 
-`$ yarn test`
+```sh
+$ yarn test`
+```
