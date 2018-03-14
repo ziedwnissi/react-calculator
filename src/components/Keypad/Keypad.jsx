@@ -1,31 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Key from '../Key/Key';
 import './Keypad.css';
 
-import Key from '../Key/Key';
-
-const Keypad = ({operators, callOperator, handleKeyPress, numbers, setOperator, updateDisplay}) => {
-
-  numbers = numbers.map((number, iterator) => {
+const Keypad = ({callOperator, numbers, operators, setOperator, updateDisplay}) => {
+  
+  numbers = numbers.map(number => {
     return (
-      <Key
-        handleKeyPress={handleKeyPress}
-        key={`${number}${iterator}`}
+      <Key 
+        key={number}
+        keyAction={updateDisplay}
         keyType="number-key"
         keyValue={number}
-        keyAction={updateDisplay}
       />
     );
   });
 
-  operators = operators.map((operator, iterator) => {
+  operators = operators.map(operator => {
     return (
-      <Key
-        handleKeyPress={handleKeyPress}
-        key={`${operator}${iterator}`}
-        keyType="operator-key" 
-        keyValue={operator}
+      <Key 
+        key={operator}
         keyAction={setOperator}
+        keyType="operator-key"
+        keyValue={operator}
       />
     );
   });
@@ -40,10 +37,9 @@ const Keypad = ({operators, callOperator, handleKeyPress, numbers, setOperator, 
       </div>
       <div className="submit-container">
         <Key
-          handleKeyPress={handleKeyPress} 
+          keyAction={callOperator}
           keyType="submit-key"
           keyValue="="
-          keyAction={callOperator}
         />
       </div>
     </div>
@@ -51,17 +47,12 @@ const Keypad = ({operators, callOperator, handleKeyPress, numbers, setOperator, 
 }
 
 Keypad.propTypes = {
-  callOperator: PropTypes.func.isRequired, 
-  handleKeyPress: PropTypes.func.isRequired, 
+  callOperator: PropTypes.func, 
+  handleKeyPress: PropTypes.func, 
   numbers: PropTypes.array.isRequired, 
   operators: PropTypes.array.isRequired,
-  setOperator: PropTypes.func.isRequired, 
-  updateDisplay: PropTypes.func.isRequired
-}
-
-Keypad.defaultProps = {
-  numbers: [], 
-  operators: [],
+  setOperator: PropTypes.func, 
+  updateDisplay: PropTypes.func,
 }
 
 export default Keypad;

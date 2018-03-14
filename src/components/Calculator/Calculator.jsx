@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import './Calculator.css';
-
 import Display from '../Display/Display';
 import Keypad from '../Keypad/Keypad';
+import './Calculator.css';
 
 class Calculator extends Component {
   constructor(props) {
@@ -30,27 +29,8 @@ class Calculator extends Component {
     document.removeEventListener('keydown', this.handleKeyPress);
   } 
 
-  handleKeyPress = (event) => {
-    const {numbers, operators} = this.state;
-    
-    if (event.key === 'Backspace') this.updateDisplay(event, 'ce');
-    if (event.key === 'Enter' || event.key === '=') this.callOperator(event);
-
-    numbers.forEach((number) => {
-      if (event.key === number){
-        this.updateDisplay(event, number);
-      }
-    });
-    
-    operators.forEach((operator) => {
-      if (event.key === operator){
-        this.setOperator(event, operator);
-      }
-    });
-  }
-
   callOperator = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     let {displayValue, selectedOperator, storedValue} = this.state;
     const updateStoredValue = displayValue;
     
@@ -80,8 +60,27 @@ class Calculator extends Component {
     this.setState({displayValue, selectedOperator, storedValue: updateStoredValue});
   }
 
+  handleKeyPress = (event) => {
+    const {numbers, operators} = this.state;
+    
+    if (event.key === 'Backspace') this.updateDisplay(event, 'ce');
+    if (event.key === 'Enter' || event.key === '=') this.callOperator(event);
+
+    numbers.forEach((number) => {
+      if (event.key === number){
+        this.updateDisplay(event, number);
+      }
+    });
+    
+    operators.forEach((operator) => {
+      if (event.key === operator){
+        this.setOperator(event, operator);
+      }
+    });
+  }
+
   setOperator = (event, value) => {
-    event.preventDefault();
+    event.preventDefault()
     let {displayValue, selectedOperator, storedValue} = this.state;
 
     if (selectedOperator === '') {
@@ -96,8 +95,10 @@ class Calculator extends Component {
   }
 
   updateDisplay = (event, value) => {
-    event.preventDefault();
+    event.preventDefault()
     let {displayValue} = this.state;
+  
+    if (value === '.' && displayValue.includes('.')) value = '';
     
     // prevent multiple occurences of '.'
     if (value === '.' && displayValue.includes('.')) value = '';
@@ -123,11 +124,10 @@ class Calculator extends Component {
       <div className="calculator-container">
         <Display displayValue={displayValue} />
         <Keypad
-          handleKeyPress={this.handleKeyPress} 
-          operators={operators}
           callOperator={this.callOperator}
+          handleKeyPress={this.handleKeyPress} 
           numbers={numbers}
-          onKeyPress={this.handleKeyPress} 
+          operators={operators}
           setOperator={this.setOperator}
           updateDisplay={this.updateDisplay}
         />
@@ -135,5 +135,5 @@ class Calculator extends Component {
     );
   }
 }
- 
+
 export default Calculator;

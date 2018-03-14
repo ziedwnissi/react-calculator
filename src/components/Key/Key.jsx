@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Key.css';
 
-const Key = ({handleKeyPress, keyAction, keyType, keyValue}) => {
+const Key = ({keyAction, keyType, keyValue}) => {
   const keyClass = `key-container ${keyType}`;
   
   return (
     <div 
       className={keyClass}
-      onClick={(event) => keyAction(event, keyValue)}
-      onKeyPress={(event) => handleKeyPress(event)}
+      onClick={event => {keyAction(event, keyValue)}}
     >
       <p className="key-value">
         {keyValue}
@@ -19,15 +18,9 @@ const Key = ({handleKeyPress, keyAction, keyType, keyValue}) => {
 }
 
 Key.propTypes = {
-  handleKeyPress: PropTypes.func.isRequired, 
-  keyAction: PropTypes.func.isRequired, 
+  keyAction: PropTypes.func,
   keyType: PropTypes.string.isRequired, 
   keyValue: PropTypes.string.isRequired,
-}
-
-Key.defaultProps = {
-  keyType: 'default',
-  keyAction: 'default',
 }
 
 export default Key;
