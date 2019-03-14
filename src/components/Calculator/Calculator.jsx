@@ -8,8 +8,8 @@ import './Calculator.css';
 class Calculator extends Component {
   state = {
     displayValue: '0',
-    numbers: ['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0', 'ce', 'mod'],
-    operators: ['/', 'x', '-', '+'],
+    numbers: ['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0', 'ce', ],
+    operators: ['/', 'x', '-', '+','mod'],
     selectedOperator: '',
     storedValue: '',
   }
